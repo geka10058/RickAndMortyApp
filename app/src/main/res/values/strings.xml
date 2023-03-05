@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Rick&amp;MortyApp</string>
     <string name="designed_by">Designed by Yauheni Kirychenka</string>
+    <string name="nav_menu_characters">Characters</string>
+    <string name="nav_menu_locations">Locations</string>
+    <string name="nav_menu_episodes">Episodes</string>
 </resources>

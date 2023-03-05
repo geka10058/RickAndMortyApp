@@ -15,7 +15,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class CharacterResponseRetrofitController: Callback<CharacterResponse> {
 
-    val characterResponseLiveData = MutableLiveData<CharacterResponse>()
+    private val characterResponseLiveData = MutableLiveData<CharacterResponse>()
 
     fun getCharacterResponse(){
 
