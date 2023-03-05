@@ -1,10 +1,11 @@
-package com.example.rickmortyapp
+package com.example.rickmortyapp.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rickmortyapp.R
 
 
 class SplashScreenActivity : AppCompatActivity() {
