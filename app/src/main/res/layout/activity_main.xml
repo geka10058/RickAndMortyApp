@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        app:titleTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/color_primary"
@@ -18,10 +19,13 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_for_fragments"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_menu"
+        android:name="com.example.rickmortyapp.ui.fragments.CharacterFragment"
+        tools:layout="@layout/fragment_character" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav_menu"

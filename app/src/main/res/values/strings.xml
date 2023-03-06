@@ -4,4 +4,8 @@
     <string name="nav_menu_characters">Characters</string>
     <string name="nav_menu_locations">Locations</string>
     <string name="nav_menu_episodes">Episodes</string>
+
+    <string name="hello_character_fragment">Hello Character Fragment</string>
+    <string name="hello_locations_fragment">Hello Locations Fragment</string>
+    <string name="hello_episodes_fragment">Hello Episodes Fragment</string>
 </resources>
