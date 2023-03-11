@@ -3,9 +3,8 @@ package com.example.rickmortyapp.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import com.example.rickmortyapp.ui.fragments.CharacterFragment
+import com.example.rickmortyapp.ui.fragments.characters.CharacterFragment
 import com.example.rickmortyapp.ui.fragments.EpisodesFragment
 import com.example.rickmortyapp.ui.fragments.LocationsFragment
 import com.example.rickmortyapp.R
@@ -36,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun handleBottomNavigation(menuItemId: Int): Boolean = when (menuItemId) {
         R.id.charactersFragment -> {
             setCurrentFragment(characterFragment, R.string.hello_character_fragment, menuItemId)
@@ -58,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_for_fragments, fragment)
             .commit()
+        supportActionBar?.title = getString(fragmentTitle)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

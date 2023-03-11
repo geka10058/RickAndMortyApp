@@ -4,18 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.CharacterFragment">
+    tools:context=".ui.fragments.characters.CharacterFragment">
 
     <TextView
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="@string/hello_character_fragment"
+        android:textColor="@color/color_secondary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_characters"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textStyle="bold"
-        android:textColor="@color/color_secondary"
-        android:textSize="22sp"/>
+        app:layout_constraintTop_toBottomOf="@id/tv"
+        tools:listitem="@layout/item_character" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_characters"
+        app:layout_constraintEnd_toEndOf="@+id/rv_characters"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

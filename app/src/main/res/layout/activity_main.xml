@@ -19,12 +19,12 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_for_fragments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_menu"
-        android:name="com.example.rickmortyapp.ui.fragments.CharacterFragment"
+        android:name="com.example.rickmortyapp.ui.fragments.characters.CharacterFragment"
         tools:layout="@layout/fragment_character" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
