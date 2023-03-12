@@ -40,8 +40,10 @@ class CharacterAdapter(private val listener: OnResultItemClickListener) :
                     .into(binding.ivCharacter)
 
                 tvName.text = result.name
+                tvName.isSelected = true
                 tvStatus.text = result.status
                 tvSpecies.text = result.species
+                tvSpecies.isSelected = true
                 tvGender.text = result.gender
             }
         }
