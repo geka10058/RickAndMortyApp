@@ -24,8 +24,6 @@ class EpisodesFragment: Fragment(R.layout.fragment_episodes){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().title = "FragmentEpisodes"
     }
 }
 

@@ -30,22 +30,20 @@ class MainActivity : AppCompatActivity() {
                 handleBottomNavigation(it.itemId)
             }
             bottomNavMenu.selectedItemId = R.id.charactersFragment
-
         }
-
     }
 
     private fun handleBottomNavigation(menuItemId: Int): Boolean = when (menuItemId) {
         R.id.charactersFragment -> {
-            setCurrentFragment(characterFragment, R.string.hello_character_fragment, menuItemId)
+            setCurrentFragment(characterFragment, R.string.title_character_fragment, menuItemId)
             true
         }
         R.id.locationsFragment -> {
-            setCurrentFragment(locationsFragment, R.string.hello_locations_fragment, menuItemId)
+            setCurrentFragment(locationsFragment, R.string.title_locations_fragment, menuItemId)
             true
         }
         R.id.episodesFragment -> {
-            setCurrentFragment(episodesFragment, R.string.hello_episodes_fragment, menuItemId)
+            setCurrentFragment(episodesFragment, R.string.title_episodes_fragment, menuItemId)
             true
         }
         else -> false

@@ -24,8 +24,6 @@ class LocationsFragment: Fragment(R.layout.fragment_locations){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().title = "FragmentLocations"
     }
 }
 
