@@ -6,7 +6,7 @@ import android.view.Menu
 import androidx.fragment.app.Fragment
 import com.example.rickmortyapp.ui.fragments.characters.CharacterFragment
 import com.example.rickmortyapp.ui.fragments.EpisodesFragment
-import com.example.rickmortyapp.ui.fragments.LocationsFragment
+import com.example.rickmortyapp.ui.fragments.locations.LocationsFragment
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.databinding.ActivityMainBinding
 

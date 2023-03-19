@@ -12,7 +12,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class CharacterResponseRetrofitController: Callback<CharacterResponse> {
+class CharacterResponseRC: Callback<CharacterResponse> {
 
     val characterResponseLiveData = MutableLiveData<CharacterResponse>()
 

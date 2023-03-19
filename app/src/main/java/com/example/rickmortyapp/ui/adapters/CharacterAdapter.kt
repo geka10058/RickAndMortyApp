@@ -11,7 +11,7 @@ import com.example.rickmortyapp.data.models.characters_data_classes.CharacterRes
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.databinding.ItemCharacterBinding
 
-class CharacterAdapter(private val listener: OnResultItemClickListener) :
+class CharacterAdapter(private val listener: OnCharacterItemClickListener) :
     ListAdapter<CharacterResult, CharacterAdapter.ResultViewHolder>(DiffCallback()) {
 
     inner class ResultViewHolder(private val binding: ItemCharacterBinding) :
@@ -37,7 +37,7 @@ class CharacterAdapter(private val listener: OnResultItemClickListener) :
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.splash_image)
-                    .into(binding.ivCharacter)
+                    .into(ivCharacter)
 
                 tvName.text = result.name
                 tvName.isSelected = true
@@ -69,6 +69,6 @@ class CharacterAdapter(private val listener: OnResultItemClickListener) :
     }
 }
 
-interface OnResultItemClickListener {
+interface OnCharacterItemClickListener {
     fun onItemClick(result: CharacterResult)
 }

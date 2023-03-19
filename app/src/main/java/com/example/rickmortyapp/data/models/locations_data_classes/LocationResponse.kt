@@ -1,11 +1,11 @@
-package com.example.rickmortyapp.data.models.characters_data_classes
+package com.example.rickmortyapp.data.models.locations_data_classes
 
 import com.example.rickmortyapp.data.models.Info
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class CharacterResponse(
+data class LocationResponse(
     @Json(name = "info") val info: Info,
-    @Json(name = "results") val characterResults: List<CharacterResult>
+    @Json(name = "results") val locationResults: List<LocationResult>
 )
