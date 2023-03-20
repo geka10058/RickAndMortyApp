@@ -8,7 +8,7 @@ data class CharacterResult(
     //@Json(name = "created") val created: String?,
     //@Json(name = "episode") val episode: List<String>,
     @Json(name = "gender") val gender: String?,
-    @Json(name = "id") val id: Int?,
+    @Json(name = "id") val id: Int,
     @Json(name = "image") val image: String?,
     //@Json(name = "location") val location: Location?,
     @Json(name = "name") val name: String?,
