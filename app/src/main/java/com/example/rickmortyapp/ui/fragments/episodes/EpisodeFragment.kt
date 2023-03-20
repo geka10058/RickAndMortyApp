@@ -1,4 +1,4 @@
-package com.example.rickmortyapp.ui.fragments.locations
+package com.example.rickmortyapp.ui.fragments.episodes
 
 import android.os.Bundle
 import android.util.Log
@@ -11,45 +11,44 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
-import com.example.rickmortyapp.data.models.locations_data_classes.LocationResponse
-import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
-import com.example.rickmortyapp.databinding.FragmentLocationsBinding
-import com.example.rickmortyapp.ui.adapters.LocationAdapter
-import com.example.rickmortyapp.ui.adapters.OnLocationItemClickListener
+import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResponse
+import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.databinding.FragmentEpisodesBinding
+import com.example.rickmortyapp.ui.adapters.EpisodeAdapter
+import com.example.rickmortyapp.ui.adapters.OnEpisodeItemClickListener
 
-class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemClickListener {
+class EpisodeFragment: Fragment(R.layout.fragment_episodes), OnEpisodeItemClickListener{
 
-    private var _binding: FragmentLocationsBinding? = null
+    private var _binding: FragmentEpisodesBinding? = null
     private val binding get() = requireNotNull(_binding)
-    private val viewModel: LocationsViewModel by viewModels {LocationsViewModel.LocationVMFactory()}
+    private val viewModel: EpisodeViewModel by viewModels { EpisodeViewModel.EpisodeVMFactory() }
     private var counterPages = 1
-    private var allPagesNumber = 42
-    private lateinit var locationAdapter: LocationAdapter
-
+    private var allPagesNumber = 8
+    private lateinit var episodesAdapter: EpisodeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLocationsBinding.inflate(inflater,container,false)
+        _binding = FragmentEpisodesBinding.inflate(inflater,container,false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.locationList.isEmpty()) {
-            viewModel.getLocationResponse(counterPages)
-            Log.d("TAG", "getLocationResponse RUN!!")
+        if (viewModel.episodeList.isEmpty()) {
+            viewModel.getEpisodeResponse(counterPages)
+            Log.d("TAG", "getEpisodeResponse RUN!!")
         }
 
-        locationAdapter = LocationAdapter(this)
+        episodesAdapter = EpisodeAdapter(this)
 
         binding.apply {
 
-            rvLocations.apply {
-                adapter = locationAdapter
+            rvEpisode.apply {
+                adapter = episodesAdapter
                 layoutManager = GridLayoutManager(requireContext(), 2)
                 setHasFixedSize(true)
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -59,7 +58,7 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
                             counterPages += 1
                             if (checkCounterPages(counterPages)) {
                                 binding.progressBar.visibility = View.VISIBLE
-                                viewModel.getLocationResponse(counterPages)
+                                viewModel.getEpisodeResponse(counterPages)
 
                             } else {
                                 Toast.makeText(
@@ -75,28 +74,28 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
             }
         }
 
-        viewModel.locationResponseLD.observe(viewLifecycleOwner){
+        viewModel.episodeResponseLD.observe(viewLifecycleOwner){
             if (checkCounterPages(counterPages)) {
                 Log.d("TAG", "Observe RUN!!")
                 it.let {
-                    setLocationListToAdapter(it)
+                    setEpisodeListToAdapter(it)
                 }
             }
         }
     }
 
-    private fun setLocationListToAdapter(response: LocationResponse) {
-        Log.d("TAG", "setLocationListToAdapter RUN!!")
-        val results = response.locationResults
-        if (viewModel.locationList.containsAll(results)) {
-            Log.d("TAG", "locationList.containsAll!!")
+    private fun setEpisodeListToAdapter(response: EpisodeResponse) {
+        Log.d("TAG", "setCharacterListToAdapter RUN!!")
+        val results = response.episodeResults
+        if (viewModel.episodeList.containsAll(results)) {
+            Log.d("TAG", "charactersList.containsAll!!")
         } else {
-            Log.d("TAG", "locationList added!!")
-            viewModel.locationList.addAll(response.locationResults)
+            Log.d("TAG", "charactersList added!!")
+            viewModel.episodeList.addAll(response.episodeResults)
         }
         allPagesNumber = response.info.pages!!
-        locationAdapter.submitList(viewModel.locationList)
-        locationAdapter.notifyDataSetChanged()
+        episodesAdapter.submitList(viewModel.episodeList)
+        episodesAdapter.notifyDataSetChanged()
         binding.progressBar.visibility = View.INVISIBLE
     }
 
@@ -105,7 +104,7 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
         return counterPages <= allPagesNumber
     }
 
-    override fun onItemClick(result: LocationResult) {
+    override fun onItemClick(result: EpisodeResult) {
         Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_LONG).show()
     }
 }

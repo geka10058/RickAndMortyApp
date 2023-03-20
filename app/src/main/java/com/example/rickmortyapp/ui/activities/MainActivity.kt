@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.fragment.app.Fragment
 import com.example.rickmortyapp.ui.fragments.characters.CharacterFragment
-import com.example.rickmortyapp.ui.fragments.EpisodesFragment
+import com.example.rickmortyapp.ui.fragments.episodes.EpisodeFragment
 import com.example.rickmortyapp.ui.fragments.locations.LocationsFragment
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.databinding.ActivityMainBinding
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var currentMenuItemId = 0
     private var characterFragment = CharacterFragment()
     private var locationsFragment = LocationsFragment()
-    private var episodesFragment = EpisodesFragment()
+    private var episodesFragment = EpisodeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -16,4 +16,6 @@
     <string name="title_species">Species:</string>
     <string name="title_dimension">Dimension:</string>
     <string name="title_type">Type:</string>
+    <string name="air_date">Air Date:</string>
+    <string name="episode">Episode:</string>
 </resources>

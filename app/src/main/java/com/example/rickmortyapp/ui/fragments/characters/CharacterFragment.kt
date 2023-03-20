@@ -88,8 +88,8 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     private fun setCharacterListToAdapter(response: CharacterResponse) {
         Log.d("TAG", "setCharacterListToAdapter RUN!!")
-        val a = response.characterResults
-        if (viewModel.charactersList.containsAll(a)) {
+        val results = response.characterResults
+        if (viewModel.charactersList.containsAll(results)) {
             Log.d("TAG", "charactersList.containsAll!!")
         } else {
             Log.d("TAG", "charactersList added!!")
