@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
+import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResponse
 import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.databinding.FragmentCharacterBinding
@@ -21,7 +22,11 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = requireNotNull(_binding)
-    private val viewModel: CharacterViewModel by viewModels { CharacterViewModel.CharacterVMFactory() }
+    private val viewModel: CharacterViewModel by viewModels {
+        CharacterViewModel.CharacterVMFactory(
+            (activity?.application as RickMortyApplication).characterRepo
+        )
+    }
     private var counterPages = 1
     private var allPagesNumber = 42
     private lateinit var characterAdapter: CharacterAdapter
@@ -38,8 +43,6 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //requireActivity().title = "FragmentCharacter"
-
         if (viewModel.charactersList.isEmpty()) {
             viewModel.getCharacterResponse(counterPages)
             Log.d("TAG", "getCharacterResponse RUN!!")
@@ -48,7 +51,6 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         characterAdapter = CharacterAdapter(this)
 
         binding.apply {
-
             rvCharacters.apply {
                 adapter = characterAdapter
                 layoutManager = GridLayoutManager(requireContext(), 2)
@@ -66,7 +68,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                                 Toast.makeText(
                                     requireContext(),
                                     "This is all data that could be downloaded",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 ).show()
                                 counterPages -= 1
                             }
@@ -84,6 +86,12 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                 }
             }
         }
+
+        viewModel.characterEntityLD.observe(viewLifecycleOwner){
+            it.let {
+                Log.d("TAG", "characterEntityLD $it")
+            }
+        }
     }
 
     private fun setCharacterListToAdapter(response: CharacterResponse) {
@@ -94,6 +102,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         } else {
             Log.d("TAG", "charactersList added!!")
             viewModel.charactersList.addAll(response.characterResults)
+            viewModel.addCharacterListToDB(response.characterResults)
         }
         allPagesNumber = response.info.pages!!
         characterAdapter.submitList(viewModel.charactersList)

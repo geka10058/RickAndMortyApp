@@ -23,7 +23,9 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
     private var _binding: FragmentEpisodesBinding? = null
     private val binding get() = requireNotNull(_binding)
     private val viewModel: EpisodeViewModel by viewModels {
-        EpisodeViewModel.EpisodeVMFactory((activity?.application as RickMortyApplication).episodeRepo)
+        EpisodeViewModel.EpisodeVMFactory(
+            (activity?.application as RickMortyApplication).episodeRepo
+        )
     }
     private var counterPages = 1
     private var allPagesNumber = 8
@@ -49,7 +51,6 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
         episodesAdapter = EpisodeAdapter(this)
 
         binding.apply {
-
             rvEpisode.apply {
                 adapter = episodesAdapter
                 layoutManager = GridLayoutManager(requireContext(), 2)
@@ -67,7 +68,7 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
                                 Toast.makeText(
                                     requireContext(),
                                     "This is all data that could be downloaded",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 ).show()
                                 counterPages -= 1
                             }
@@ -86,8 +87,8 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
             }
         }
 
-        viewModel.episodeEntityLD.observe(viewLifecycleOwner){
-            it.let{
+        viewModel.episodeEntityLD.observe(viewLifecycleOwner) {
+            it.let {
                 Log.d("TAG", "episodeEntityLD $it")
             }
         }

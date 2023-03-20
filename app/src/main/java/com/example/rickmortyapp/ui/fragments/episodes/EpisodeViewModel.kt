@@ -9,26 +9,27 @@ import com.example.rickmortyapp.data.db.repositories.EpisodeRepo
 import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.data.retrofit_controllers.EpisodeResponseRC
 
-class EpisodeViewModel(private val episodeRepo: EpisodeRepo): ViewModel(){
+class EpisodeViewModel(private val episodeRepo: EpisodeRepo) : ViewModel() {
 
     private val controller = EpisodeResponseRC()
     val episodeResponseLD = controller.episodeResponseLiveData
     val episodeList = mutableListOf<EpisodeResult>()
     val episodeEntityLD: LiveData<List<EpisodeEntity>> = episodeRepo.episodeFlow.asLiveData()
 
-    fun getEpisodeResponse(pageNumber: Int){
+    fun getEpisodeResponse(pageNumber: Int) {
         controller.getEpisodeResponse(pageNumber)
     }
 
-    fun addEpisodesToDB(episodeList: List<EpisodeResult>){
+    fun addEpisodesToDB(episodeList: List<EpisodeResult>) {
         val list = convertResultToEntity(episodeList)
         episodeRepo.insertEpisodeList(list)
     }
 
-    private fun convertResultToEntity(episodeList: List<EpisodeResult>):List<EpisodeEntity>{
+    private fun convertResultToEntity(episodeList: List<EpisodeResult>): List<EpisodeEntity> {
         val episodeEntityList = mutableListOf<EpisodeEntity>()
         for (episode in episodeList) {
-            val episodeEntity = EpisodeEntity(episode.id,episode.name,episode.airDate,episode.episode)
+            val episodeEntity =
+                EpisodeEntity(episode.id, episode.name, episode.airDate, episode.episode)
             episodeEntityList.add(episodeEntity)
         }
         return episodeEntityList

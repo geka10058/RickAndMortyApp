@@ -11,17 +11,22 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
+import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.data.models.locations_data_classes.LocationResponse
 import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
 import com.example.rickmortyapp.databinding.FragmentLocationsBinding
 import com.example.rickmortyapp.ui.adapters.LocationAdapter
 import com.example.rickmortyapp.ui.adapters.OnLocationItemClickListener
 
-class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemClickListener {
+class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemClickListener {
 
     private var _binding: FragmentLocationsBinding? = null
     private val binding get() = requireNotNull(_binding)
-    private val viewModel: LocationsViewModel by viewModels {LocationsViewModel.LocationVMFactory()}
+    private val viewModel: LocationsViewModel by viewModels {
+        LocationsViewModel.LocationVMFactory(
+            (activity?.application as RickMortyApplication).locationRepo
+        )
+    }
     private var counterPages = 1
     private var allPagesNumber = 42
     private lateinit var locationAdapter: LocationAdapter
@@ -32,7 +37,7 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLocationsBinding.inflate(inflater,container,false)
+        _binding = FragmentLocationsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,7 +52,6 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
         locationAdapter = LocationAdapter(this)
 
         binding.apply {
-
             rvLocations.apply {
                 adapter = locationAdapter
                 layoutManager = GridLayoutManager(requireContext(), 2)
@@ -65,7 +69,7 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
                                 Toast.makeText(
                                     requireContext(),
                                     "This is all data that could be downloaded",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 ).show()
                                 counterPages -= 1
                             }
@@ -75,12 +79,18 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
             }
         }
 
-        viewModel.locationResponseLD.observe(viewLifecycleOwner){
+        viewModel.locationResponseLD.observe(viewLifecycleOwner) {
             if (checkCounterPages(counterPages)) {
                 Log.d("TAG", "Observe RUN!!")
                 it.let {
                     setLocationListToAdapter(it)
                 }
+            }
+        }
+
+        viewModel.locationEntityLD.observe(viewLifecycleOwner) {
+            it.let {
+                Log.d("TAG", "locationEntityLD $it")
             }
         }
     }
@@ -93,6 +103,7 @@ class LocationsFragment: Fragment(R.layout.fragment_locations), OnLocationItemCl
         } else {
             Log.d("TAG", "locationList added!!")
             viewModel.locationList.addAll(response.locationResults)
+            viewModel.addLocationToDB(response.locationResults)
         }
         allPagesNumber = response.info.pages!!
         locationAdapter.submitList(viewModel.locationList)
