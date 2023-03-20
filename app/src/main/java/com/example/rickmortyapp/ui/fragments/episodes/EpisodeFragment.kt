@@ -11,17 +11,20 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
+import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResponse
 import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.databinding.FragmentEpisodesBinding
 import com.example.rickmortyapp.ui.adapters.EpisodeAdapter
 import com.example.rickmortyapp.ui.adapters.OnEpisodeItemClickListener
 
-class EpisodeFragment: Fragment(R.layout.fragment_episodes), OnEpisodeItemClickListener{
+class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClickListener {
 
     private var _binding: FragmentEpisodesBinding? = null
     private val binding get() = requireNotNull(_binding)
-    private val viewModel: EpisodeViewModel by viewModels { EpisodeViewModel.EpisodeVMFactory() }
+    private val viewModel: EpisodeViewModel by viewModels {
+        EpisodeViewModel.EpisodeVMFactory((activity?.application as RickMortyApplication).episodeRepo)
+    }
     private var counterPages = 1
     private var allPagesNumber = 8
     private lateinit var episodesAdapter: EpisodeAdapter
@@ -31,7 +34,7 @@ class EpisodeFragment: Fragment(R.layout.fragment_episodes), OnEpisodeItemClickL
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEpisodesBinding.inflate(inflater,container,false)
+        _binding = FragmentEpisodesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,12 +77,18 @@ class EpisodeFragment: Fragment(R.layout.fragment_episodes), OnEpisodeItemClickL
             }
         }
 
-        viewModel.episodeResponseLD.observe(viewLifecycleOwner){
+        viewModel.episodeResponseLD.observe(viewLifecycleOwner) {
             if (checkCounterPages(counterPages)) {
                 Log.d("TAG", "Observe RUN!!")
                 it.let {
                     setEpisodeListToAdapter(it)
                 }
+            }
+        }
+
+        viewModel.episodeEntityLD.observe(viewLifecycleOwner){
+            it.let{
+                Log.d("TAG", "episodeEntityLD $it")
             }
         }
     }
@@ -92,6 +101,7 @@ class EpisodeFragment: Fragment(R.layout.fragment_episodes), OnEpisodeItemClickL
         } else {
             Log.d("TAG", "charactersList added!!")
             viewModel.episodeList.addAll(response.episodeResults)
+            viewModel.addEpisodesToDB(response.episodeResults)
         }
         allPagesNumber = response.info.pages!!
         episodesAdapter.submitList(viewModel.episodeList)
