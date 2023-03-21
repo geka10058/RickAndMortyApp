@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
+import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResponse
 import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.databinding.FragmentCharacterBinding
+import com.example.rickmortyapp.ui.activities.MainActivity
 import com.example.rickmortyapp.ui.adapters.CharacterAdapter
 import com.example.rickmortyapp.ui.adapters.OnCharacterItemClickListener
 
@@ -92,6 +94,8 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                 Log.d("TAG", "characterEntityLD $it")
             }
         }
+
+        Log.d("TAG", "checkInternetConnection is ${Utils.checkInternetConnection(requireActivity() as MainActivity)} ")
     }
 
     private fun setCharacterListToAdapter(response: CharacterResponse) {
@@ -114,6 +118,8 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         Log.d("TAG", "checkCounterPages RUN!!")
         return counterPages <= allPagesNumber
     }
+
+
 
     override fun onItemClick(result: CharacterResult) {
         Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_LONG).show()
