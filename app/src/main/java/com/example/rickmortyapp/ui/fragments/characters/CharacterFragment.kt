@@ -1,7 +1,6 @@
 package com.example.rickmortyapp.ui.fragments.characters
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -55,6 +54,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.apply {
+
             rvCharacters.apply {
                 adapter = characterAdapter
                 layoutManager = gridLayoutManager
@@ -63,8 +63,6 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int
                     ) {
                         super.onScrollStateChanged(recyclerView, newState)
-                        viewModel.restoredItemPosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
-
                         if (!recyclerView.canScrollVertically(1) && !isScrollEnded) {
                             scrollIsEnded()
                         }
@@ -105,7 +103,6 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         characterAdapter.notifyDataSetChanged()
         binding.progressBar.visibility = View.INVISIBLE
         isScrollEnded = false
-        binding.rvCharacters.scrollToPosition(viewModel.restoredItemPosition)
     }
 
     private fun checkCounterPages(counterPages: Int): Boolean {
@@ -131,11 +128,9 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                     Toast.LENGTH_SHORT
                 ).show()
                 counterPages -= 1
-                Log.d("TAG", "False СounterPages= $counterPages")
             }
         } else {
             viewModel.selectDataSource(checkConnection())
-            Log.d("TAG", "False checkInternetConnection")
             Toast.makeText(
                 requireContext(),
                 "False checkInternetConnection",

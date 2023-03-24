@@ -1,6 +1,5 @@
 package com.example.rickmortyapp.ui.fragments.characters
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.rickmortyapp.data.db.entities.CharacterEntity
 import com.example.rickmortyapp.data.db.repositories.CharacterRepo
@@ -47,7 +46,7 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         return characterEntityList
     }
 
-    fun convertEntityToResult(characterEntityList: List<CharacterEntity>): List<CharacterResult> {
+    fun convertEntityToResult(characterEntityList: List<CharacterEntity>):List<CharacterResult> {
         val characterList = mutableListOf<CharacterResult>()
         for (character in characterEntityList) {
             val characterResult =
@@ -64,7 +63,7 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         return characterList
     }
 
-    fun selectDataSource(checkConnection: Boolean) {
+    fun selectDataSource(checkConnection: Boolean){
         if (checkConnection) {
             characterLD.value = characterResponse
         } else {
@@ -73,17 +72,16 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         }
     }
 
-    fun checkCharacterListIsContainsData(list: List<CharacterResult>) {
-        if (charactersList.containsAll(list)) {
+    fun checkCharacterListIsContainsData(list:List<CharacterResult>){
+        if (!charactersList.containsAll(list)) {
             charactersList.addAll(list)
             addCharacterListToDB(list)
         }
     }
 
-    private fun checkCharacterEntityIsContainsList(characterEntity: List<CharacterResult>): List<CharacterResult> {
+    private fun checkCharacterEntityIsContainsList(characterEntity: List<CharacterResult>):List<CharacterResult>{
         var newList = characterEntity
-        if (characterEntity.containsAll(charactersList)) newList =
-            characterEntity - charactersList.toSet()
+        if (characterEntity.containsAll(charactersList)) newList = characterEntity - charactersList.toSet()
         return newList
     }
 
