@@ -18,4 +18,6 @@ object Utils {
             else -> false
         }
     }
+
+    const val CHARACTER_FIRST_ITEM_POSITION = "CFIP"
 }

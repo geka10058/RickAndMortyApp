@@ -18,6 +18,7 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
     val characterEntity = mutableListOf<CharacterResult>()
 
     var entityCounterPages = 0
+    var restoredItemPosition = 1
     private val numberOfItemsInResponse = 20
 
     fun getCharacterResponse(pageNumber: Int) {
@@ -46,7 +47,7 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         return characterEntityList
     }
 
-    fun convertEntityToResult(characterEntityList: List<CharacterEntity>):List<CharacterResult> {
+    fun convertEntityToResult(characterEntityList: List<CharacterEntity>): List<CharacterResult> {
         val characterList = mutableListOf<CharacterResult>()
         for (character in characterEntityList) {
             val characterResult =
@@ -63,30 +64,26 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         return characterList
     }
 
-    fun selectDataSource(checkConnection: Boolean){
+    fun selectDataSource(checkConnection: Boolean) {
         if (checkConnection) {
-            Log.d("TAG", "True checkInternetConnection")
             characterLD.value = characterResponse
         } else {
-            Log.d("TAG", "False checkInternetConnection")
             characterLD.value = checkCharacterEntityIsContainsList(characterEntity)
             entityCounterPages = characterEntity.size / numberOfItemsInResponse
         }
     }
 
-    fun checkCharacterListIsContainsData(list:List<CharacterResult>){
+    fun checkCharacterListIsContainsData(list: List<CharacterResult>) {
         if (charactersList.containsAll(list)) {
-            Log.d("TAG", "charactersList.containsAll!!")
-        } else {
-            Log.d("TAG", "charactersList added!!")
             charactersList.addAll(list)
             addCharacterListToDB(list)
         }
     }
 
-    private fun checkCharacterEntityIsContainsList(characterEntity: List<CharacterResult>):List<CharacterResult>{
+    private fun checkCharacterEntityIsContainsList(characterEntity: List<CharacterResult>): List<CharacterResult> {
         var newList = characterEntity
-        if (characterEntity.containsAll(charactersList)) newList = characterEntity - charactersList.toSet()
+        if (characterEntity.containsAll(charactersList)) newList =
+            characterEntity - charactersList.toSet()
         return newList
     }
 

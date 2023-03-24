@@ -32,6 +32,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
     private var allPagesNumber = 42
     private var isScrollEnded = false
     private lateinit var characterAdapter: CharacterAdapter
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +52,18 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         }
 
         characterAdapter = CharacterAdapter(this)
+        gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.apply {
-
             rvCharacters.apply {
                 adapter = characterAdapter
-                layoutManager = GridLayoutManager(requireContext(), 2)
+                layoutManager = gridLayoutManager
                 setHasFixedSize(true)
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int
                     ) {
                         super.onScrollStateChanged(recyclerView, newState)
+                        viewModel.restoredItemPosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
 
                         if (!recyclerView.canScrollVertically(1) && !isScrollEnded) {
                             scrollIsEnded()
@@ -92,11 +94,9 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
         viewModel.characterLD.observe(viewLifecycleOwner) {
             it.let {
-                Log.d("TAG", "characterLD.observe $it ")
                 setDataToAdapter(it)
             }
         }
-
     }
 
     private fun setDataToAdapter(list: List<CharacterResult>) {
@@ -105,10 +105,10 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         characterAdapter.notifyDataSetChanged()
         binding.progressBar.visibility = View.INVISIBLE
         isScrollEnded = false
+        binding.rvCharacters.scrollToPosition(viewModel.restoredItemPosition)
     }
 
     private fun checkCounterPages(counterPages: Int): Boolean {
-        Log.d("TAG", "checkCounterPages RUN!!")
         return counterPages <= allPagesNumber
     }
 
@@ -118,11 +118,9 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     private fun scrollIsEnded(){
         isScrollEnded = true
-        Log.d("TAG", "recyclerView.canScrollVertically RUN")
         if (checkConnection()) {
             if (viewModel.entityCounterPages > counterPages) counterPages = viewModel.entityCounterPages
             counterPages += 1
-            Log.d("TAG", "Next counterPages= $counterPages")
             if (checkCounterPages(counterPages)) {
                 binding.progressBar.visibility = View.VISIBLE
                 viewModel.getCharacterResponse(counterPages)
@@ -148,6 +146,12 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     override fun onItemClick(result: CharacterResult) {
         Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
+        viewModel.restoredItemPosition = position
     }
 }
 
