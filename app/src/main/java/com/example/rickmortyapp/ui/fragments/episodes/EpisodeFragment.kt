@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
-import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResponse
+import com.example.rickmortyapp.Utils.checkInternetConnection
 import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.databinding.FragmentEpisodesBinding
 import com.example.rickmortyapp.ui.adapters.EpisodeAdapter
@@ -29,7 +30,9 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
     }
     private var counterPages = 1
     private var allPagesNumber = 8
+    private var isScrollEnded = false
     private lateinit var episodesAdapter: EpisodeAdapter
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,34 +47,24 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.episodeList.isEmpty()) {
+            viewModel.selectDataSource(checkConnection())
             viewModel.getEpisodeResponse(counterPages)
             Log.d("TAG", "getEpisodeResponse RUN!!")
         }
 
         episodesAdapter = EpisodeAdapter(this)
+        gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.apply {
             rvEpisode.apply {
                 adapter = episodesAdapter
-                layoutManager = GridLayoutManager(requireContext(), 2)
+                layoutManager = gridLayoutManager
                 setHasFixedSize(true)
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         super.onScrollStateChanged(recyclerView, newState)
-                        if (!recyclerView.canScrollVertically(1)) {
-                            counterPages += 1
-                            if (checkCounterPages(counterPages)) {
-                                binding.progressBar.visibility = View.VISIBLE
-                                viewModel.getEpisodeResponse(counterPages)
-
-                            } else {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "This is all data that could be downloaded",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                counterPages -= 1
-                            }
+                        if (!recyclerView.canScrollVertically(1) && !isScrollEnded) {
+                            scrollIsEnded()
                         }
                     }
                 })
@@ -79,44 +72,84 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
         }
 
         viewModel.episodeResponseLD.observe(viewLifecycleOwner) {
-            if (checkCounterPages(counterPages)) {
-                Log.d("TAG", "Observe RUN!!")
-                it.let {
-                    setEpisodeListToAdapter(it)
+            it.let {
+                if (it.episodeResults != null) {
+                    val result = it.episodeResults
+                    allPagesNumber = it.info.pages!!
+                    viewModel.episodeResponse.clear()
+                    viewModel.episodeResponse.addAll(result)
+                    viewModel.selectDataSource(checkConnection())
                 }
             }
         }
 
         viewModel.episodeEntityLD.observe(viewLifecycleOwner) {
             it.let {
-                Log.d("TAG", "episodeEntityLD $it")
+                val result = viewModel.convertEntityToResult(it)
+                viewModel.episodeEntity.clear()
+                viewModel.episodeEntity.addAll(result)
+                viewModel.selectDataSource(checkConnection())
+            }
+        }
+
+        viewModel.episodeLD.observe(viewLifecycleOwner) {
+            it.let {
+                setDataToAdapter(it)
             }
         }
     }
 
-    private fun setEpisodeListToAdapter(response: EpisodeResponse) {
-        Log.d("TAG", "setCharacterListToAdapter RUN!!")
-        val results = response.episodeResults
-        if (viewModel.episodeList.containsAll(results)) {
-            Log.d("TAG", "charactersList.containsAll!!")
-        } else {
-            Log.d("TAG", "charactersList added!!")
-            viewModel.episodeList.addAll(response.episodeResults)
-            viewModel.addEpisodesToDB(response.episodeResults)
-        }
-        allPagesNumber = response.info.pages!!
+
+    private fun setDataToAdapter(list: List<EpisodeResult>) {
+        viewModel.checkEpisodeListIsContainsData(list)
         episodesAdapter.submitList(viewModel.episodeList)
         episodesAdapter.notifyDataSetChanged()
         binding.progressBar.visibility = View.INVISIBLE
+        isScrollEnded = false
     }
 
     private fun checkCounterPages(counterPages: Int): Boolean {
-        Log.d("TAG", "checkCounterPages RUN!!")
         return counterPages <= allPagesNumber
+    }
+
+    private fun checkConnection(): Boolean {
+        return checkInternetConnection(requireActivity() as AppCompatActivity)
+    }
+
+    private fun scrollIsEnded() {
+        isScrollEnded = true
+        if (checkConnection()) {
+            if (viewModel.entityCounterPages > counterPages) counterPages =
+                viewModel.entityCounterPages
+            counterPages += 1
+            if (checkCounterPages(counterPages)) {
+                binding.progressBar.visibility = View.VISIBLE
+                viewModel.getEpisodeResponse(counterPages)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "This is all data that could be downloaded",
+                    Toast.LENGTH_SHORT
+                ).show()
+                counterPages -= 1
+            }
+        } else {
+            viewModel.selectDataSource(checkConnection())
+            Toast.makeText(
+                requireContext(),
+                "False checkInternetConnection",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     override fun onItemClick(result: EpisodeResult) {
         Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.restoredItemPosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
     }
 }
 

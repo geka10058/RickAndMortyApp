@@ -79,9 +79,9 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         }
     }
 
-    private fun checkCharacterEntityIsContainsList(characterEntity: List<CharacterResult>):List<CharacterResult>{
-        var newList = characterEntity
-        if (characterEntity.containsAll(charactersList)) newList = characterEntity - charactersList.toSet()
+    private fun checkCharacterEntityIsContainsList(characterEntitiesList: List<CharacterResult>):List<CharacterResult>{
+        var newList = characterEntitiesList
+        if (characterEntitiesList.containsAll(charactersList)) newList = characterEntitiesList - charactersList.toSet()
         return newList
     }
 

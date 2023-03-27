@@ -60,7 +60,8 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                 layoutManager = gridLayoutManager
                 setHasFixedSize(true)
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int
+                    override fun onScrollStateChanged(
+                        recyclerView: RecyclerView, newState: Int
                     ) {
                         super.onScrollStateChanged(recyclerView, newState)
                         if (!recyclerView.canScrollVertically(1) && !isScrollEnded) {
@@ -109,14 +110,15 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         return counterPages <= allPagesNumber
     }
 
-    private fun checkConnection():Boolean{
+    private fun checkConnection(): Boolean {
         return checkInternetConnection(requireActivity() as AppCompatActivity)
     }
 
-    private fun scrollIsEnded(){
+    private fun scrollIsEnded() {
         isScrollEnded = true
         if (checkConnection()) {
-            if (viewModel.entityCounterPages > counterPages) counterPages = viewModel.entityCounterPages
+            if (viewModel.entityCounterPages > counterPages) counterPages =
+                viewModel.entityCounterPages
             counterPages += 1
             if (checkCounterPages(counterPages)) {
                 binding.progressBar.visibility = View.VISIBLE
@@ -145,8 +147,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     override fun onPause() {
         super.onPause()
-        val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
-        viewModel.restoredItemPosition = position
+        viewModel.restoredItemPosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
     }
 }
 

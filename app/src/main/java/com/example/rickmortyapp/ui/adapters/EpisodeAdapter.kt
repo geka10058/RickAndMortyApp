@@ -72,4 +72,5 @@ class EpisodeAdapter(private val listener: OnEpisodeItemClickListener) :
 
 interface OnEpisodeItemClickListener {
     fun onItemClick(result: EpisodeResult)
+
 }

@@ -64,7 +64,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/tv_air_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+        app:layout_constraintTop_toBottomOf="@id/tv_episode" />
 
     <TextView
         android:id="@+id/tv_air_date"
@@ -79,7 +79,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_air_date"
-        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+        app:layout_constraintTop_toBottomOf="@id/tv_episode" />
 
     <TextView
         android:id="@+id/tv_title_episode"
@@ -92,7 +92,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/tv_episode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_air_date" />
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
     <TextView
         android:id="@+id/tv_episode"
@@ -110,6 +110,6 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_episode"
-        app:layout_constraintTop_toBottomOf="@id/tv_air_date" />
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

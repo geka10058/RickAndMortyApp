@@ -10,5 +10,5 @@ data class EpisodeEntity(
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "air_date") val airDate: String?,
     @ColumnInfo(name = "episode") val episode: String?,
-    //@ColumnInfo(name = "characters") val characters: List<String>?,
+    @ColumnInfo(name = "characters") val characters: String?,
 )
