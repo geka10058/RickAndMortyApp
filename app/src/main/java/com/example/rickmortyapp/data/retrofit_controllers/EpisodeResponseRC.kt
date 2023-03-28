@@ -3,7 +3,7 @@ package com.example.rickmortyapp.data.retrofit_controllers
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rickmortyapp.api.ApiRickMorty
-import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResponse
+import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

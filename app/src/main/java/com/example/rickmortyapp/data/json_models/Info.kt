@@ -1,4 +1,4 @@
-package com.example.rickmortyapp.data.models
+package com.example.rickmortyapp.data.json_models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

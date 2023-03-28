@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
+import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.Utils.checkInternetConnection
-import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.databinding.FragmentEpisodesBinding
 import com.example.rickmortyapp.ui.adapters.EpisodeAdapter
 import com.example.rickmortyapp.ui.adapters.OnEpisodeItemClickListener
+import com.example.rickmortyapp.ui.fragments.episodes.details.EpisodeDetailsFragment
 
 class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClickListener {
 
@@ -144,7 +146,15 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
     }
 
     override fun onItemClick(result: EpisodeResult) {
-        Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_LONG).show()
+        val bundle = Bundle()
+        bundle.putInt(Utils.BUNDLE_FLAG_EPISODE, result.id)
+        val episodeDetailsFragment = EpisodeDetailsFragment()
+        episodeDetailsFragment.arguments = bundle
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container_for_fragments, episodeDetailsFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onPause() {

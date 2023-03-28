@@ -3,7 +3,7 @@ package com.example.rickmortyapp.data.retrofit_controllers
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rickmortyapp.api.ApiRickMorty
-import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -12,11 +12,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class EpisodeByIdResultRC: Callback<EpisodeResult> {
+class CharacterListForEpisodeRC: Callback<List<CharacterResult>> {
 
-    val episodeByIdResultLiveData = MutableLiveData<EpisodeResult>()
+    val characterListForEpisodeLiveData = MutableLiveData<List<CharacterResult>>()
 
-    fun getEpisodeByIdResult(id: Int){
+    fun getCharacterListForEpisode(idList: String){
 
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -29,16 +29,16 @@ class EpisodeByIdResultRC: Callback<EpisodeResult> {
             .build()
 
         val api: ApiRickMorty = retrofit.create(ApiRickMorty::class.java)
-        val call: Call<EpisodeResult> = api.getEpisodeById(id)
+        val call: Call<List<CharacterResult>> = api.getCharacterListForEpisode(idList)
         call.enqueue(this)
     }
 
-    override fun onResponse(call: Call<EpisodeResult>, response: Response<EpisodeResult>) {
+    override fun onResponse(call: Call<List<CharacterResult>>, response: Response<List<CharacterResult>>) {
         if (response.isSuccessful){
-            episodeByIdResultLiveData.postValue(response.body())
+            characterListForEpisodeLiveData.postValue(response.body())
             Log.d("TAG", response.body().toString())
         } else println(response.errorBody())
     }
 
-    override fun onFailure(call: Call<EpisodeResult>, t: Throwable) { t.printStackTrace() }
+    override fun onFailure(call: Call<List<CharacterResult>>, t: Throwable) { t.printStackTrace() }
 }

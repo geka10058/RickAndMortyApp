@@ -9,25 +9,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.R
-import com.example.rickmortyapp.databinding.ItemCharacterBinding
+import com.example.rickmortyapp.databinding.ItemCharacterMiniBinding
 
-class CharacterAdapter(private val listener: OnCharacterItemClickListener) :
-    ListAdapter<CharacterResult, CharacterAdapter.ResultViewHolder>(DiffCallback()) {
+class CharacterMiniAdapter :
+    ListAdapter<CharacterResult, CharacterMiniAdapter.ResultMiniViewHolder>(DiffCallback()) {
 
-    inner class ResultViewHolder(private val binding: ItemCharacterBinding) :
+    inner class ResultMiniViewHolder(private val binding: ItemCharacterMiniBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            binding.apply {
-                root.setOnClickListener {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val result = getItem(position)
-                        if (result != null) listener.onItemClick(result)
-                    }
-                }
-            }
-        }
 
         fun bind(result: CharacterResult) {
             binding.apply {
@@ -41,10 +29,6 @@ class CharacterAdapter(private val listener: OnCharacterItemClickListener) :
 
                 tvName.text = result.name
                 tvName.isSelected = true
-                tvStatus.text = result.status
-                tvSpecies.text = result.species
-                tvSpecies.isSelected = true
-                tvGender.text = result.gender
             }
         }
     }
@@ -57,18 +41,17 @@ class CharacterAdapter(private val listener: OnCharacterItemClickListener) :
             oldItem == newItem
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
-        val binding =
-            ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ResultViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ResultMiniViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }
-}
 
-interface OnCharacterItemClickListener {
-    fun onItemClick(result: CharacterResult)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): CharacterMiniAdapter.ResultMiniViewHolder {
+        val binding =
+            ItemCharacterMiniBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ResultMiniViewHolder(binding)
+    }
 }

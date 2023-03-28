@@ -15,4 +15,7 @@ interface EpisodeDao {
 
     @Query("SELECT * FROM episode_table ORDER BY id ASC")
     fun getAllEpisodes(): Flow<List<EpisodeEntity>>
+
+    @Query("SELECT * FROM episode_table WHERE id=:id")
+    fun getEpisodeById(id:Int): EpisodeEntity
 }

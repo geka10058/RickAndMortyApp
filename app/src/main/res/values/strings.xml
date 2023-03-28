@@ -20,4 +20,6 @@
     <string name="title_episode">Episode:</string>
     <string name="title_origin">Origin:</string>
     <string name="title_location">Location:</string>
+    <string name="title_character">Characters:</string>
+    <string name="internet_connection_off">Turn on internet connection to see list of characters</string>
 </resources>

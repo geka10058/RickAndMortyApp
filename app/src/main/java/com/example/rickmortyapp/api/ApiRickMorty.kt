@@ -1,11 +1,11 @@
 package com.example.rickmortyapp.api
 
-import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResponse
-import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
-import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
-import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResponse
-import com.example.rickmortyapp.data.models.locations_data_classes.LocationResponse
-import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
+import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResponse
+import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResponse
+import com.example.rickmortyapp.data.json_models.locations_data_classes.LocationResponse
+import com.example.rickmortyapp.data.json_models.locations_data_classes.LocationResult
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -21,6 +21,10 @@ interface ApiRickMorty {
     @Headers("Content-type: application/json")
     @GET("character/{id}")
     fun getCharacterById(@Path("id") id: Int): Call<CharacterResult>
+
+    @Headers("Content-type: application/json")
+    @GET("character/{idList}")
+    fun getCharacterListForEpisode(@Path("idList") idList: String): Call<List<CharacterResult>>
 
     @Headers("Content-type: application/json")
     @GET("location/?")

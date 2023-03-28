@@ -3,7 +3,7 @@ package com.example.rickmortyapp.data.retrofit_controllers
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rickmortyapp.api.ApiRickMorty
-import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -34,7 +34,6 @@ class CharacterByIdResultRC: Callback<CharacterResult> {
     }
 
     override fun onResponse(call: Call<CharacterResult>, response: Response<CharacterResult>) {
-
         if (response.isSuccessful){
             characterByIdResultLiveData.postValue(response.body())
             Log.d("TAG", response.body().toString())
