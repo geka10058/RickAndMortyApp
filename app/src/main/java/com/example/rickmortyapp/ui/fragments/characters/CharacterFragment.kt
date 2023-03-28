@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
+import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.Utils.checkInternetConnection
 import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.databinding.FragmentCharacterBinding
 import com.example.rickmortyapp.ui.adapters.CharacterAdapter
 import com.example.rickmortyapp.ui.adapters.OnCharacterItemClickListener
+import com.example.rickmortyapp.ui.fragments.characters.details.CharacterDetailsFragment
 
 class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItemClickListener {
 
@@ -142,7 +144,15 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
     }
 
     override fun onItemClick(result: CharacterResult) {
-        Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_LONG).show()
+        val bundle = Bundle()
+        bundle.putInt(Utils.BUNDLE_FLAG_CHARACTER, result.id)
+        val characterDetailsFragment = CharacterDetailsFragment()
+        characterDetailsFragment.arguments = bundle
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container_for_fragments, characterDetailsFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onPause() {

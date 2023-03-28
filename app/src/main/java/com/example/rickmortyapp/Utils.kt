@@ -22,4 +22,5 @@ object Utils {
     const val CHARACTER_FIRST_ITEM_POSITION = "CFIP"
     const val LOCATION_FIRST_ITEM_POSITION = "LFIP"
     const val EPISODE_FIRST_ITEM_POSITION = "EFIP"
+    const val BUNDLE_FLAG_CHARACTER = "bundle_flag_character_id"
 }

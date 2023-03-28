@@ -15,4 +15,7 @@ interface CharacterDao {
 
     @Query("SELECT * FROM character_table ORDER BY id ASC")
     fun getAllCharacters(): Flow<List<CharacterEntity>>
+
+    @Query("SELECT * FROM character_table WHERE id=:id")
+    fun getCharacterById(id:Int): CharacterEntity
 }

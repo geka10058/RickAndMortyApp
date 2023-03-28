@@ -4,6 +4,8 @@ import androidx.lifecycle.*
 import com.example.rickmortyapp.data.db.entities.CharacterEntity
 import com.example.rickmortyapp.data.db.repositories.CharacterRepo
 import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.models.characters_data_classes.Location
+import com.example.rickmortyapp.data.models.characters_data_classes.Origin
 import com.example.rickmortyapp.data.retrofit_controllers.CharacterResponseRC
 
 class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel() {
@@ -34,36 +36,40 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         for (character in characterList) {
             val characterEntity =
                 CharacterEntity(
-                    character.gender,
                     character.id,
-                    character.image,
                     character.name,
+                    character.status,
                     character.species,
-                    character.status
+                    character.gender,
+                    character.origin?.name ?: "unknown",
+                    character.location?.name ?: "unknown",
+                    character.image
                 )
             characterEntityList.add(characterEntity)
         }
         return characterEntityList
     }
 
-    fun convertEntityToResult(characterEntityList: List<CharacterEntity>):List<CharacterResult> {
+    fun convertEntityToResult(characterEntityList: List<CharacterEntity>): List<CharacterResult> {
         val characterList = mutableListOf<CharacterResult>()
         for (character in characterEntityList) {
             val characterResult =
                 CharacterResult(
-                    character.gender,
                     character.id,
-                    character.image,
                     character.name,
+                    character.status,
                     character.species,
-                    character.status
+                    character.gender,
+                    Origin(character.origin, ""),
+                    Location(character.location, ""),
+                    character.image
                 )
             characterList.add(characterResult)
         }
         return characterList
     }
 
-    fun selectDataSource(checkConnection: Boolean){
+    fun selectDataSource(checkConnection: Boolean) {
         if (checkConnection) {
             characterLD.value = characterResponse
         } else {
@@ -72,16 +78,17 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         }
     }
 
-    fun checkCharacterListIsContainsData(list:List<CharacterResult>){
+    fun checkCharacterListIsContainsData(list: List<CharacterResult>) {
         if (!charactersList.containsAll(list)) {
             charactersList.addAll(list)
             addCharacterListToDB(list)
         }
     }
 
-    private fun checkCharacterEntityIsContainsList(characterEntitiesList: List<CharacterResult>):List<CharacterResult>{
+    private fun checkCharacterEntityIsContainsList(characterEntitiesList: List<CharacterResult>): List<CharacterResult> {
         var newList = characterEntitiesList
-        if (characterEntitiesList.containsAll(charactersList)) newList = characterEntitiesList - charactersList.toSet()
+        if (characterEntitiesList.containsAll(charactersList)) newList =
+            characterEntitiesList - charactersList.toSet()
         return newList
     }
 
