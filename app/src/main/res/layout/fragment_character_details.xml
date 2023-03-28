@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
-    android:elevation="5dp"
-    android:paddingBottom="12dp">
+    tools:context=".ui.fragments.characters.details.CharacterDetailsFragment">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_character"
@@ -49,7 +55,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
         android:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_name">
@@ -69,58 +76,51 @@
         android:id="@+id/tv_title_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp"
         android:elevation="5dp"
         android:text="@string/title_status"
         android:textColor="@color/color_primary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_title_species"
         app:layout_constraintEnd_toStartOf="@id/tv_status"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cv_details"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintTop_toTopOf="@id/cv_details"
+
+        />
 
     <TextView
         android:id="@+id/tv_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:elevation="5dp"
         android:text="@string/title_status"
-
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_species"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_status"
-        app:layout_constraintTop_toTopOf="@+id/cv_details"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintTop_toTopOf="@id/cv_details" />
 
     <TextView
         android:id="@+id/tv_title_species"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp"
         android:elevation="5dp"
         android:text="@string/title_species"
         android:textColor="@color/color_primary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_title_gender"
         app:layout_constraintEnd_toStartOf="@id/tv_species"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_status" />
+        app:layout_constraintTop_toBottomOf="@id/tv_status" />
 
     <TextView
         android:id="@+id/tv_species"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:elevation="5dp"
         android:ellipsize="marquee"
         android:focusable="true"
@@ -130,7 +130,6 @@
         android:singleLine="true"
         android:text="@string/title_species"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_gender"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_species"
         app:layout_constraintTop_toBottomOf="@+id/tv_status" />
@@ -139,27 +138,25 @@
         android:id="@+id/tv_title_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp"
         android:elevation="5dp"
         android:text="@string/title_gender"
         android:textColor="@color/color_primary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_title_origin"
         app:layout_constraintEnd_toStartOf="@id/tv_gender"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_species" />
+        app:layout_constraintTop_toBottomOf="@id/tv_species" />
 
     <TextView
         android:id="@+id/tv_gender"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:elevation="5dp"
-        android:text="@string/title_species"
+        android:text="@string/title_gender"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_origin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_gender"
         app:layout_constraintTop_toBottomOf="@+id/tv_species" />
@@ -168,27 +165,25 @@
         android:id="@+id/tv_title_origin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp"
         android:elevation="5dp"
         android:text="@string/title_origin"
         android:textColor="@color/color_primary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_title_location"
         app:layout_constraintEnd_toStartOf="@id/tv_origin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_gender" />
+        app:layout_constraintTop_toBottomOf="@id/tv_gender" />
 
     <TextView
         android:id="@+id/tv_origin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:elevation="5dp"
         android:text="@string/title_origin"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_origin"
         app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
@@ -197,27 +192,26 @@
         android:id="@+id/tv_title_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp"
         android:elevation="5dp"
         android:text="@string/title_location"
         android:textColor="@color/color_primary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cv_details"
         app:layout_constraintEnd_toStartOf="@id/tv_location"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_origin" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_origin" />
 
     <TextView
         android:id="@+id/tv_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:paddingBottom="12dp"
         android:elevation="5dp"
         android:text="@string/title_location"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cv_details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title_location"
         app:layout_constraintTop_toBottomOf="@+id/tv_origin" />
@@ -226,8 +220,8 @@
         android:id="@+id/progress_bar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:visibility="invisible"
         android:elevation="10dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -237,10 +231,11 @@
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_name,cv_character,cv_details,tv_title_gender,tv_gender,tv_title_location,tv_location,tv_title_origin,tv_origin,tv_title_species,tv_species,tv_title_status,tv_status"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:constraint_referenced_ids="tv_name,cv_character,cv_details,tv_title_gender,tv_gender,tv_title_location,tv_location,tv_title_origin,tv_origin,tv_title_species,tv_species,tv_title_status,tv_status"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

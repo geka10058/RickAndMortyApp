@@ -1,7 +1,6 @@
 package com.example.rickmortyapp.ui.fragments.characters.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +15,15 @@ import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.databinding.FragmentCharacterDetailsBinding
 
-class CharacterDetailsFragment: Fragment(R.layout.fragment_character_details) {
+class CharacterDetailsFragment : Fragment(R.layout.fragment_character_details) {
 
     private var _binding: FragmentCharacterDetailsBinding? = null
     private val binding get() = requireNotNull(_binding)
-    lateinit var args: Bundle
     private var characterId = 0
     private val viewModel: CharacterDetailsViewModel by viewModels {
-        CharacterDetailsVMFactory(
-            (activity?.application as RickMortyApplication).characterRepo
-        )
+        CharacterDetailsVMFactory((activity?.application as RickMortyApplication).characterRepo)
     }
+    private lateinit var args: Bundle
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,39 +38,43 @@ class CharacterDetailsFragment: Fragment(R.layout.fragment_character_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TAG", "onViewCreated")
 
-        binding.group.visibility = View.INVISIBLE
-        binding.progressBar.visibility = View.VISIBLE
+        binding.apply {
+            group.visibility = View.INVISIBLE
+            progressBar.visibility = View.VISIBLE
+            root.setOnRefreshListener {
+                viewModel.getCharactersDetails(characterId, checkConnection())
+                root.isRefreshing = false
+            }
+        }
+
         viewModel.getCharactersDetails(characterId, checkConnection())
 
-        viewModel.characterDetailsResultLD.observe(viewLifecycleOwner){
-            if (checkConnection()){
+        viewModel.characterDetailsResultLD.observe(viewLifecycleOwner) {
+            if (checkConnection()) {
                 it.let {
                     viewModel.characterDetailsLiveData.value = it
                 }
             }
         }
 
-        viewModel.characterEntityDetailsLD.observe(viewLifecycleOwner){
-            if (!checkConnection()){
-                it.let{
+        viewModel.characterEntityDetailsLD.observe(viewLifecycleOwner) {
+            if (!checkConnection()) {
+                it.let {
                     val result = viewModel.convertEntityToResult(it)
                     viewModel.characterDetailsLiveData.value = result
                 }
             }
         }
 
-        viewModel.characterDetailsLiveData.observe(viewLifecycleOwner){
-            it.let{
-                Log.d("TAG", "Данные есть")
-                Log.d("TAG", it.toString())
+        viewModel.characterDetailsLiveData.observe(viewLifecycleOwner) {
+            it.let {
                 setData(it)
             }
         }
     }
 
-    private fun setData(characterResult: CharacterResult){
+    private fun setData(characterResult: CharacterResult) {
         binding.apply {
             tvName.text = characterResult.name
             tvStatus.text = characterResult.status

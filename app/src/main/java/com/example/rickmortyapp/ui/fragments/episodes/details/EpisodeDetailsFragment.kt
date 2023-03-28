@@ -1,7 +1,6 @@
 package com.example.rickmortyapp.ui.fragments.episodes.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -16,13 +15,14 @@ import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeRe
 import com.example.rickmortyapp.databinding.FragmentEpisodeDetailsBinding
 import com.example.rickmortyapp.ui.adapters.CharacterMiniAdapter
 
-class EpisodeDetailsFragment: Fragment(R.layout.fragment_episode_details) {
+class EpisodeDetailsFragment : Fragment(R.layout.fragment_episode_details) {
 
     private var _binding: FragmentEpisodeDetailsBinding? = null
     private val binding get() = requireNotNull(_binding)
     private var characterId = 0
     private val viewModel: EpisodeDetailsViewModel by viewModels {
-        EpisodeDetailsVMFactory((activity?.application as RickMortyApplication).episodeRepo) }
+        EpisodeDetailsVMFactory((activity?.application as RickMortyApplication).episodeRepo)
+    }
     private lateinit var args: Bundle
     private lateinit var characterAdapter: CharacterMiniAdapter
 
@@ -40,7 +40,6 @@ class EpisodeDetailsFragment: Fragment(R.layout.fragment_episode_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TAG", "onViewCreated")
         characterAdapter = CharacterMiniAdapter()
 
         binding.apply {
@@ -54,19 +53,20 @@ class EpisodeDetailsFragment: Fragment(R.layout.fragment_episode_details) {
 
         viewModel.getEpisodeDetails(characterId, checkConnection())
 
-        viewModel.episodeDetailsResultLD.observe(viewLifecycleOwner){
-            if (checkConnection()){
+        viewModel.episodeDetailsResultLD.observe(viewLifecycleOwner) {
+            if (checkConnection()) {
                 it.let {
                     viewModel.episodeDetailsLiveData.value = it
-                    val characterList = viewModel.convertCharacterListToIdList(it.characters ?: emptyList())
+                    val characterList =
+                        viewModel.convertCharacterListToIdList(it.characters ?: emptyList())
                     viewModel.getCharacterListForEpisode(characterList)
                 }
             }
         }
 
-        viewModel.episodeEntityDetailsLD.observe(viewLifecycleOwner){
-            if (!checkConnection()){
-                it.let{
+        viewModel.episodeEntityDetailsLD.observe(viewLifecycleOwner) {
+            if (!checkConnection()) {
+                it.let {
                     val result = viewModel.convertEntityToResult(it)
                     viewModel.episodeDetailsLiveData.value = result
                     binding.tvCharacters.text = getString(R.string.internet_connection_off)
@@ -74,20 +74,20 @@ class EpisodeDetailsFragment: Fragment(R.layout.fragment_episode_details) {
             }
         }
 
-        viewModel.episodeDetailsLiveData.observe(viewLifecycleOwner){
-            it.let{
+        viewModel.episodeDetailsLiveData.observe(viewLifecycleOwner) {
+            it.let {
                 setDataToView(it)
             }
         }
 
-        viewModel.characterListForEpisodeLD.observe(viewLifecycleOwner){
+        viewModel.characterListForEpisodeLD.observe(viewLifecycleOwner) {
             it.let {
                 setDataToAdapter(it)
             }
         }
     }
 
-    private fun setDataToView(episodeResult: EpisodeResult){
+    private fun setDataToView(episodeResult: EpisodeResult) {
         binding.apply {
             tvName.text = episodeResult.name
             tvEpisode.text = episodeResult.episode
@@ -98,11 +98,13 @@ class EpisodeDetailsFragment: Fragment(R.layout.fragment_episode_details) {
         }
     }
 
-    private fun setDataToAdapter(result: List<CharacterResult>){
+    private fun setDataToAdapter(result: List<CharacterResult>) {
         binding.rvCharacters.apply {
             adapter = characterAdapter
-            layoutManager = LinearLayoutManager(requireContext(),
-                RecyclerView.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                RecyclerView.HORIZONTAL, false
+            )
             setHasFixedSize(true)
             characterAdapter.submitList(result)
             characterAdapter.notifyDataSetChanged()
