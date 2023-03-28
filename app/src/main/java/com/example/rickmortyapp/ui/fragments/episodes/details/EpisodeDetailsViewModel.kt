@@ -1,6 +1,5 @@
 package com.example.rickmortyapp.ui.fragments.episodes.details
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,10 +21,8 @@ class EpisodeDetailsViewModel(private val episodeRepo: EpisodeRepo): ViewModel()
     fun getEpisodeDetails(characterID: Int, checkConnection:Boolean) {
         if (checkConnection){
             controllerForEpisodeResponse.getEpisodeByIdResult(characterID)
-            Log.d("TAG", "Выбран запрос")
         } else {
             episodeRepo.getEpisodeById(characterID)
-            Log.d("TAG", "Выбрана БД")
         }
     }
 

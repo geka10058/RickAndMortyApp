@@ -17,6 +17,7 @@ import com.example.rickmortyapp.data.json_models.locations_data_classes.Location
 import com.example.rickmortyapp.databinding.FragmentLocationsBinding
 import com.example.rickmortyapp.ui.adapters.LocationAdapter
 import com.example.rickmortyapp.ui.adapters.OnLocationItemClickListener
+import com.example.rickmortyapp.ui.fragments.locations.details.LocationDetailsFragment
 
 class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemClickListener {
 
@@ -96,22 +97,6 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
         }
     }
 
-    /*private fun setLocationListToAdapter(response: LocationResponse) {
-        Log.d("TAG", "setLocationListToAdapter RUN!!")
-        val results = response.locationResults
-        if (viewModel.locationList.containsAll(results)) {
-            Log.d("TAG", "locationList.containsAll!!")
-        } else {
-            Log.d("TAG", "locationList added!!")
-            viewModel.locationList.addAll(response.locationResults)
-            viewModel.addLocationListToDB(response.locationResults)
-        }
-        allPagesNumber = response.info.pages!!
-        locationAdapter.submitList(viewModel.locationList)
-        locationAdapter.notifyDataSetChanged()
-        binding.progressBar.visibility = View.INVISIBLE
-    }*/
-
     private fun setDataToAdapter(list: List<LocationResult>) {
         viewModel.checkLocationListIsContainsData(list)
         locationAdapter.submitList(viewModel.locationList)
@@ -139,7 +124,7 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
             }else {
                 Toast.makeText(
                     requireContext(),
-                    "This is all data that could be downloaded",
+                    getString(R.string.all_data_uploaded),
                     Toast.LENGTH_SHORT
                 ).show()
                 counterPages -= 1
@@ -148,14 +133,22 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
             viewModel.selectDataSource(checkConnection())
             Toast.makeText(
                 requireContext(),
-                "False checkInternetConnection",
+                getString(R.string.internet_connection_off),
                 Toast.LENGTH_SHORT
             ).show()
         }
     }
 
     override fun onItemClick(result: LocationResult) {
-        Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_SHORT).show()
+        val bundle = Bundle()
+        bundle.putInt(Utils.BUNDLE_FLAG_LOCATION, result.id)
+        val locationDetailsFragment = LocationDetailsFragment()
+        locationDetailsFragment.arguments = bundle
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container_for_fragments, locationDetailsFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onPause() {

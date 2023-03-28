@@ -1,7 +1,6 @@
 package com.example.rickmortyapp.ui.fragments.episodes
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +50,6 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
         if (viewModel.episodeList.isEmpty()) {
             viewModel.selectDataSource(checkConnection())
             viewModel.getEpisodeResponse(counterPages)
-            Log.d("TAG", "getEpisodeResponse RUN!!")
         }
 
         episodesAdapter = EpisodeAdapter(this)
@@ -130,7 +128,7 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "This is all data that could be downloaded",
+                    getString(R.string.all_data_uploaded),
                     Toast.LENGTH_SHORT
                 ).show()
                 counterPages -= 1
@@ -139,7 +137,7 @@ class EpisodeFragment : Fragment(R.layout.fragment_episodes), OnEpisodeItemClick
             viewModel.selectDataSource(checkConnection())
             Toast.makeText(
                 requireContext(),
-                "False checkInternetConnection",
+                getString(R.string.internet_connection_off),
                 Toast.LENGTH_SHORT
             ).show()
         }

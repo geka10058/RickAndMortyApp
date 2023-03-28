@@ -10,4 +10,5 @@ data class LocationEntity(
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "type") val type: String?,
     @ColumnInfo(name = "dimension") val dimension: String?,
+    @ColumnInfo(name = "residents") val residents: String?,
 )

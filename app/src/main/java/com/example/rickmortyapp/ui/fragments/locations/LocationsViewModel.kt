@@ -33,7 +33,13 @@ class LocationsViewModel(private val locationRepo: LocationRepo) : ViewModel() {
         val locationEntityList = mutableListOf<LocationEntity>()
         for (location in locationList) {
             val locationEntity =
-                LocationEntity(location.id, location.name, location.type, location.dimension)
+                LocationEntity(
+                    location.id,
+                    location.name,
+                    location.type,
+                    location.dimension,
+                    location.residents.toString()
+                )
             locationEntityList.add(locationEntity)
         }
         return locationEntityList
@@ -43,7 +49,13 @@ class LocationsViewModel(private val locationRepo: LocationRepo) : ViewModel() {
         val locationList = mutableListOf<LocationResult>()
         for (location in locationEntityList) {
             val locationResult =
-                LocationResult(location.id, location.name, location.type, location.dimension)
+                LocationResult(
+                    location.id,
+                    location.name,
+                    location.type,
+                    location.dimension,
+                    location.residents?.split(",") ?: emptyList<String>()
+                )
             locationList.add(locationResult)
         }
         return locationList
@@ -67,7 +79,8 @@ class LocationsViewModel(private val locationRepo: LocationRepo) : ViewModel() {
 
     private fun checkLocationListIsContainsList(locationEntityList: List<LocationResult>): List<LocationResult> {
         var newList = locationEntityList
-        if (locationEntityList.containsAll(locationList)) newList = locationEntityList - locationList.toSet()
+        if (locationEntityList.containsAll(locationList)) newList =
+            locationEntityList - locationList.toSet()
         return newList
     }
 

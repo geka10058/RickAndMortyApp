@@ -128,7 +128,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "This is all data that could be downloaded",
+                    getString(R.string.all_data_uploaded),
                     Toast.LENGTH_SHORT
                 ).show()
                 counterPages -= 1
@@ -137,7 +137,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
             viewModel.selectDataSource(checkConnection())
             Toast.makeText(
                 requireContext(),
-                "False checkInternetConnection",
+                getString(R.string.internet_connection_off),
                 Toast.LENGTH_SHORT
             ).show()
         }
