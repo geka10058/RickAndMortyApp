@@ -1,17 +1,22 @@
 package com.example.rickmortyapp.ui.fragments.characters
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.rickmortyapp.data.db.entities.CharacterEntity
 import com.example.rickmortyapp.data.db.repositories.CharacterRepo
-import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
-import com.example.rickmortyapp.data.json_models.characters_data_classes.Location
-import com.example.rickmortyapp.data.json_models.characters_data_classes.Origin
+import com.example.rickmortyapp.data.models.Parameter
+import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.models.characters_data_classes.Location
+import com.example.rickmortyapp.data.models.characters_data_classes.Origin
+import com.example.rickmortyapp.data.retrofit_controllers.CharacterWithParametersRC
 import com.example.rickmortyapp.data.retrofit_controllers.CharacterResponseRC
 
 class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel() {
 
-    private val controller = CharacterResponseRC()
-    val characterResponseLD = controller.characterResponseLiveData
+    private val controllerResponse = CharacterResponseRC()
+    private val controllerForSearchWithParameters = CharacterWithParametersRC()
+    val controllerForSearchWithParametersLD = controllerForSearchWithParameters.characterListWithParametersLiveData
+    val characterResponseLD = controllerResponse.characterResponseLiveData
     val characterEntityLD = characterRepo.characterFlow.asLiveData()
     val characterLD = MutableLiveData<List<CharacterResult>>()
     val charactersList = mutableListOf<CharacterResult>()
@@ -23,12 +28,32 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
     private val numberOfItemsInResponse = 20
 
     fun getCharacterResponse(pageNumber: Int) {
-        controller.getCharacterResponse(pageNumber)
+        controllerResponse.getCharacterResponse(pageNumber)
     }
 
     private fun addCharacterListToDB(characterList: List<CharacterResult>) {
         val list = convertResultToEntity(characterList)
         characterRepo.insertCharacterList(list)
+    }
+
+    fun getSearchWithParameters(parameters: List<Parameter>){
+        val params = convertParametersToMap(parameters)
+        Log.d("TAG", "getSearchWithParameters! параметры: $params")
+        controllerForSearchWithParameters.getCharacterListWithParameters(params)
+    }
+
+    private fun convertParametersToMap(parameters: List<Parameter>):Map<String,String>{
+        val map = hashMapOf<String,String>()//
+        for (param in parameters){
+            when(param.name){
+                "name" -> { map.put(param.name,param.value) }
+                "species" -> { map.put(param.name,param.value) }
+                "status" -> { map.put(param.name,param.value) }
+                "type" -> { map.put(param.name,param.value) }
+                "gender" -> { map.put(param.name,param.value) }
+            }
+        }
+        return map
     }
 
     private fun convertResultToEntity(characterList: List<CharacterResult>): List<CharacterEntity> {

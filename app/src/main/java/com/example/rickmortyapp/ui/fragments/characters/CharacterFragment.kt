@@ -1,7 +1,5 @@
 package com.example.rickmortyapp.ui.fragments.characters
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -18,7 +16,8 @@ import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.Utils.checkInternetConnection
-import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.models.Parameter
+import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.databinding.FragmentCharacterBinding
 import com.example.rickmortyapp.ui.adapters.CharacterAdapter
 import com.example.rickmortyapp.ui.adapters.OnCharacterItemClickListener
@@ -37,6 +36,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
     private var counterPages = 1
     private var allPagesNumber = 42
     private var isScrollEnded = false
+    private var searchedListIsActive = false
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
 
@@ -104,6 +104,18 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                 setDataToAdapter(it)
             }
         }
+
+        viewModel.controllerForSearchWithParametersLD.observe(viewLifecycleOwner){
+            it.let {
+                if (it.characterResults.isNullOrEmpty()) {
+                    Toast.makeText(requireContext(),getString(R.string.no_data_on_request), Toast.LENGTH_SHORT).show()
+                } else {
+                    characterAdapter.submitList(it.characterResults)
+                    characterAdapter.notifyDataSetChanged()
+                }
+
+            }
+        }
     }
 
     private fun setupToolbarMenu() {
@@ -111,25 +123,6 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.toolbar_search_menu,menu)
-                /*val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-                val searchItem = menu.findItem(R.id.search)
-                val searchView = searchItem.actionView as SearchView
-
-                //searchView.setSearchableInfo(manager.getSearchableInfo())
-
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        searchView.clearFocus()
-                        searchView.setQuery("", false)
-                        searchView.onActionViewCollapsed()
-                        Toast.makeText(requireContext(),"$query", Toast.LENGTH_SHORT).show()
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        return false
-                    }
-                })*/
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -160,7 +153,9 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     private fun searchByName(searchString: String?) {
         if (checkConnection()) {
-
+            if (searchString != null && searchString.isNotEmpty()) {
+                viewModel.getSearchWithParameters(listOf(Parameter("name", searchString)))
+            }
         } else {
             if (searchString != null && searchString.isNotEmpty()) {
                 val list: List<CharacterResult> = viewModel.charactersList.filter {

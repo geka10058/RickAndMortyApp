@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.rickmortyapp.data.db.entities.EpisodeEntity
 import com.example.rickmortyapp.data.db.repositories.EpisodeRepo
-import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.data.retrofit_controllers.CharacterListForEpisodeRC
 import com.example.rickmortyapp.data.retrofit_controllers.EpisodeByIdResultRC
 

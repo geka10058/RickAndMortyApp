@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.rickmortyapp.data.db.entities.LocationEntity
 import com.example.rickmortyapp.data.db.repositories.LocationRepo
-import com.example.rickmortyapp.data.json_models.locations_data_classes.LocationResult
+import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
 import com.example.rickmortyapp.data.retrofit_controllers.CharacterListForEpisodeRC
 import com.example.rickmortyapp.data.retrofit_controllers.LocationByIdResultRC
 

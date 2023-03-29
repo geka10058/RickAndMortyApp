@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.Utils
-import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
-import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.databinding.FragmentEpisodeDetailsBinding
 import com.example.rickmortyapp.ui.adapters.CharacterMiniAdapter
 

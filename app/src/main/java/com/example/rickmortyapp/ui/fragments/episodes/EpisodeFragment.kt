@@ -14,7 +14,7 @@ import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.Utils.checkInternetConnection
-import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.databinding.FragmentEpisodesBinding
 import com.example.rickmortyapp.ui.adapters.EpisodeAdapter
 import com.example.rickmortyapp.ui.adapters.OnEpisodeItemClickListener

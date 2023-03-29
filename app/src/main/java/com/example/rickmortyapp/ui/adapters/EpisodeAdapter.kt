@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.rickmortyapp.R
-import com.example.rickmortyapp.data.json_models.episodes_data_classes.EpisodeResult
+import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
 import com.example.rickmortyapp.databinding.ItemEpisodeBinding
 
 class EpisodeAdapter(private val listener: OnEpisodeItemClickListener) :

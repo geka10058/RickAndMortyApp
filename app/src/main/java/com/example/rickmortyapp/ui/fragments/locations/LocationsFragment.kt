@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.Utils
-import com.example.rickmortyapp.data.json_models.locations_data_classes.LocationResult
+import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
 import com.example.rickmortyapp.databinding.FragmentLocationsBinding
 import com.example.rickmortyapp.ui.adapters.LocationAdapter
 import com.example.rickmortyapp.ui.adapters.OnLocationItemClickListener

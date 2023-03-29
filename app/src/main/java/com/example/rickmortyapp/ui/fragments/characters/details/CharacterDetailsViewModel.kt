@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.rickmortyapp.data.db.entities.CharacterEntity
 import com.example.rickmortyapp.data.db.repositories.CharacterRepo
-import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
-import com.example.rickmortyapp.data.json_models.characters_data_classes.Location
-import com.example.rickmortyapp.data.json_models.characters_data_classes.Origin
+import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.models.characters_data_classes.Location
+import com.example.rickmortyapp.data.models.characters_data_classes.Origin
 import com.example.rickmortyapp.data.retrofit_controllers.CharacterByIdResultRC
 
 class CharacterDetailsViewModel(private val characterRepo: CharacterRepo): ViewModel() {

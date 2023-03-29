@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.Utils
-import com.example.rickmortyapp.data.json_models.characters_data_classes.CharacterResult
+import com.example.rickmortyapp.data.models.characters_data_classes.CharacterResult
 import com.example.rickmortyapp.databinding.FragmentCharacterDetailsBinding
 
 class CharacterDetailsFragment : Fragment(R.layout.fragment_character_details) {
