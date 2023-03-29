@@ -26,6 +26,8 @@ interface ApiRickMorty {
     @GET("character/{idList}")
     fun getCharacterListForEpisode(@Path("idList") idList: String): Call<List<CharacterResult>>
 
+
+
     @Headers("Content-type: application/json")
     @GET("location/?")
     fun getLocationsResponse(@Query("page") page: Int): Call<LocationResponse>

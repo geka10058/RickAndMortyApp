@@ -1,13 +1,17 @@
 package com.example.rickmortyapp.ui.fragments.characters
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
@@ -19,6 +23,7 @@ import com.example.rickmortyapp.databinding.FragmentCharacterBinding
 import com.example.rickmortyapp.ui.adapters.CharacterAdapter
 import com.example.rickmortyapp.ui.adapters.OnCharacterItemClickListener
 import com.example.rickmortyapp.ui.fragments.characters.details.CharacterDetailsFragment
+import java.util.*
 
 class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItemClickListener {
 
@@ -46,6 +51,7 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbarMenu()
 
         if (viewModel.charactersList.isEmpty()) {
             viewModel.selectDataSource(checkConnection())
@@ -98,6 +104,73 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                 setDataToAdapter(it)
             }
         }
+    }
+
+    private fun setupToolbarMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider{
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.toolbar_search_menu,menu)
+                /*val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+                val searchItem = menu.findItem(R.id.search)
+                val searchView = searchItem.actionView as SearchView
+
+                //searchView.setSearchableInfo(manager.getSearchableInfo())
+
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        searchView.clearFocus()
+                        searchView.setQuery("", false)
+                        searchView.onActionViewCollapsed()
+                        Toast.makeText(requireContext(),"$query", Toast.LENGTH_SHORT).show()
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+                })*/
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when(menuItem.itemId) {
+                    R.id.search -> {
+                        val searchView = menuItem.actionView as SearchView
+                        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                            override fun onQueryTextSubmit(query: String?): Boolean {
+                                searchView.clearFocus()
+                                searchView.setQuery("", false)
+                                searchView.onActionViewCollapsed()
+                                searchByName(query)
+                                return true
+                            }
+
+                            override fun onQueryTextChange(newText: String?): Boolean {
+                                return false
+                            }
+
+                        })
+                    }
+                    R.id.filter -> Toast.makeText(requireContext(),"filter clicked", Toast.LENGTH_SHORT).show()
+                }
+                return true
+            }
+        },viewLifecycleOwner,Lifecycle.State.RESUMED)
+    }
+
+    private fun searchByName(searchString: String?) {
+        if (checkConnection()) {
+
+        } else {
+            if (searchString != null && searchString.isNotEmpty()) {
+                val list: List<CharacterResult> = viewModel.charactersList.filter {
+                    it.name!!.uppercase(Locale.getDefault())
+                        .contains(searchString.uppercase(Locale.getDefault()))
+                }
+                characterAdapter.submitList(list)
+            }
+        }
+        characterAdapter.notifyDataSetChanged()
     }
 
     private fun setDataToAdapter(list: List<CharacterResult>) {

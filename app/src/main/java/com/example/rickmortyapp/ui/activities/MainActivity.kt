@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             bottomNavMenu.setOnNavigationItemSelectedListener {
                 handleBottomNavigation(it.itemId)
             }
-            bottomNavMenu.selectedItemId = R.id.charactersFragment
+            //bottomNavMenu.selectedItemId = R.id.charactersFragment
         }
     }
 

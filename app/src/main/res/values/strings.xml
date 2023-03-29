@@ -4,6 +4,8 @@
     <string name="nav_menu_characters">Characters</string>
     <string name="nav_menu_locations">Locations</string>
     <string name="nav_menu_episodes">Episodes</string>
+    <string name="nav_menu_search">Search</string>
+    <string name="nav_menu_filter">Filter</string>
 
     <string name="title_character_fragment">Characters</string>
     <string name="title_locations_fragment">Locations</string>
