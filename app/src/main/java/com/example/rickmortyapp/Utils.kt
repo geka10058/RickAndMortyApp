@@ -25,4 +25,10 @@ object Utils {
     const val BUNDLE_FLAG_CHARACTER = "bundle_flag_character_id"
     const val BUNDLE_FLAG_EPISODE = "bundle_flag_episode_id"
     const val BUNDLE_FLAG_LOCATION = "bundle_flag_location_id"
+    const val NAME = "name"
+    const val SPECIES = "species"
+    const val STATUS = "status"
+    const val TYPE = "type"
+    const val GENDER = "gender"
+    const val NOT_SELECTED = "not selected"
 }

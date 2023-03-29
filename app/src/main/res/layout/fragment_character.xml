@@ -6,28 +6,226 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.characters.CharacterFragment">
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_search"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/title_character_fragment"
-        android:textColor="@color/color_secondary"
-        android:textSize="22sp"
+        android:elevation="10dp"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="btn_filter,cv_filter,tv_filter,et_name,tv_gender,tv_status,ll_spinners,tv_species,tv_type,ll_searchs" />
+
+    <Button
+        android:id="@+id/btn_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Filter"
+        android:textAllCaps="false"
+        android:background="@drawable/background_btn_white"
+        android:textColor="@color/white"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/cv_filter"
+        app:layout_constraintStart_toStartOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/ll_searchs"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_filter"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp"
+        android:elevation="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/btn_filter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:gravity="center_horizontal"
+        android:text="Filter by:"
+        android:textColor="@color/color_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cv_filter" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/background_round_black"
+        android:ellipsize="end"
+        android:hint="@string/title_name"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/color_primary"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/cv_filter"
+        app:layout_constraintStart_toStartOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/tv_filter" />
+
+    <TextView
+        android:id="@+id/tv_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:paddingEnd="24dp"
+        android:text="@string/title_gender"
+        android:textColor="@color/color_primary"
+        app:layout_constraintEnd_toStartOf="@id/tv_status"
+        app:layout_constraintStart_toStartOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:paddingStart="24dp"
+        android:text="@string/title_status"
+        android:textColor="@color/color_primary"
+        app:layout_constraintEnd_toEndOf="@id/tv_gender"
+        app:layout_constraintStart_toEndOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+    <LinearLayout
+        android:id="@+id/ll_spinners"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/cv_filter"
+        app:layout_constraintStart_toStartOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/tv_status">
+
+        <Spinner
+            android:id="@+id/spinner_gender"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_round_black"
+            android:entries="@array/gender_array"
+            android:popupBackground="@drawable/background_round_black"
+            android:spinnerMode="dropdown"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinner_status"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_round_black"
+            android:entries="@array/status_array"
+            android:popupBackground="@drawable/background_round_black"
+            android:spinnerMode="dropdown"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_species"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:paddingEnd="24dp"
+        android:text="@string/title_species"
+        android:textColor="@color/color_primary"
+        app:layout_constraintEnd_toStartOf="@id/tv_type"
+        app:layout_constraintStart_toStartOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/ll_spinners" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:paddingStart="24dp"
+        android:text="@string/title_type"
+        android:textColor="@color/color_primary"
+        app:layout_constraintEnd_toEndOf="@id/cv_filter"
+        app:layout_constraintStart_toEndOf="@id/tv_species"
+        app:layout_constraintTop_toBottomOf="@id/ll_spinners" />
+
+    <LinearLayout
+        android:id="@+id/ll_searchs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="@id/cv_filter"
+        app:layout_constraintStart_toStartOf="@id/cv_filter"
+        app:layout_constraintTop_toBottomOf="@id/tv_type">
+
+        <EditText
+            android:id="@+id/et_species"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/background_round_black"
+            android:ellipsize="end"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            />
+
+        <EditText
+            android:id="@+id/et_type"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/background_round_black"
+            android:ellipsize="end"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+           />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_characters"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_character" />
 
     <ProgressBar

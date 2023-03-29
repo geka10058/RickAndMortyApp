@@ -2,6 +2,7 @@ package com.example.rickmortyapp.ui.fragments.characters
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.data.db.entities.CharacterEntity
 import com.example.rickmortyapp.data.db.repositories.CharacterRepo
 import com.example.rickmortyapp.data.models.Parameter
@@ -46,11 +47,11 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         val map = hashMapOf<String,String>()//
         for (param in parameters){
             when(param.name){
-                "name" -> { map.put(param.name,param.value) }
-                "species" -> { map.put(param.name,param.value) }
-                "status" -> { map.put(param.name,param.value) }
-                "type" -> { map.put(param.name,param.value) }
-                "gender" -> { map.put(param.name,param.value) }
+                Utils.NAME -> { map.put(param.name,param.value) }
+                Utils.SPECIES -> { map.put(param.name,param.value) }
+                Utils.STATUS -> { map.put(param.name,param.value) }
+                Utils.TYPE -> { map.put(param.name,param.value) }
+                Utils.GENDER -> { map.put(param.name,param.value) }
             }
         }
         return map

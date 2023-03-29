@@ -28,4 +28,20 @@
     <string name="internet_connection_false">Turn on internet connection to see more</string>
     <string name="all_data_uploaded">All data uploaded</string>
     <string name="no_data_on_request">There is no data on your request</string>
+    <string name="parameters_not_selected">search parameters are not selected</string>
+
+    <string-array name="gender_array">
+        <item>not selected</item>
+        <item>female</item>
+        <item>male</item>
+        <item>genderless </item>
+        <item>unknown</item>
+    </string-array>
+
+    <string-array name="status_array">
+        <item>not selected</item>
+        <item>alive</item>
+        <item>dead </item>
+        <item>unknown </item>
+    </string-array>
 </resources>

@@ -2,8 +2,11 @@ package com.example.rickmortyapp.ui.fragments.characters
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
@@ -36,9 +39,17 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
     private var counterPages = 1
     private var allPagesNumber = 42
     private var isScrollEnded = false
+    private var searchFragmentIsVisible = false
     private var searchedListIsActive = false
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var spinnerGender: Spinner
+    private lateinit var spinnerStatus: Spinner
+    private lateinit var name: String
+    private lateinit var spec: String
+    private lateinit var type: String
+    private lateinit var gender: String
+    private lateinit var status: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +58,22 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
     ): View {
         _binding = FragmentCharacterBinding.inflate(inflater, container, false)
         return binding.root
+
+        /*val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            if (searchedListIsActive) {
+                characterAdapter.submitList(viewModel.charactersList)
+                characterAdapter.notifyDataSetChanged()
+                searchedListIsActive = false
+            } else if(searchFragmentIsVisible) showOrHideSearchFragment() else handleOnBackPressed()
+
+        }*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbarMenu()
+        initSearchSpinners()
+        addOnBackPressedCallback()
 
         if (viewModel.charactersList.isEmpty()) {
             viewModel.selectDataSource(checkConnection())
@@ -72,11 +94,17 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                         recyclerView: RecyclerView, newState: Int
                     ) {
                         super.onScrollStateChanged(recyclerView, newState)
-                        if (!recyclerView.canScrollVertically(1) && !isScrollEnded) {
-                            scrollIsEnded()
+                        if (!searchedListIsActive) {
+                            if (!recyclerView.canScrollVertically(1) && !isScrollEnded) {
+                                scrollIsEnded()
+                            }
                         }
                     }
                 })
+            }
+
+            btnFilter.setOnClickListener {
+                filterButtonClicked()
             }
         }
 
@@ -105,30 +133,35 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
             }
         }
 
-        viewModel.controllerForSearchWithParametersLD.observe(viewLifecycleOwner){
+        viewModel.controllerForSearchWithParametersLD.observe(viewLifecycleOwner) {
             it.let {
                 if (it.characterResults.isNullOrEmpty()) {
-                    Toast.makeText(requireContext(),getString(R.string.no_data_on_request), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.no_data_on_request),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     characterAdapter.submitList(it.characterResults)
                     characterAdapter.notifyDataSetChanged()
+                    searchedListIsActive = true
                 }
-
             }
         }
     }
 
     private fun setupToolbarMenu() {
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider{
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.toolbar_search_menu,menu)
+                menuInflater.inflate(R.menu.toolbar_search_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when(menuItem.itemId) {
+                when (menuItem.itemId) {
                     R.id.search -> {
                         val searchView = menuItem.actionView as SearchView
+                        searchView.queryHint = getString(R.string.title_name)
                         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                             override fun onQueryTextSubmit(query: String?): Boolean {
                                 searchView.clearFocus()
@@ -141,14 +174,15 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                             override fun onQueryTextChange(newText: String?): Boolean {
                                 return false
                             }
-
                         })
                     }
-                    R.id.filter -> Toast.makeText(requireContext(),"filter clicked", Toast.LENGTH_SHORT).show()
+                    R.id.filter -> {
+                        showOrHideSearchFragment()
+                    }
                 }
                 return true
             }
-        },viewLifecycleOwner,Lifecycle.State.RESUMED)
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun searchByName(searchString: String?) {
@@ -168,20 +202,44 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
         characterAdapter.notifyDataSetChanged()
     }
 
-    private fun setDataToAdapter(list: List<CharacterResult>) {
-        viewModel.checkCharacterListIsContainsData(list)
-        characterAdapter.submitList(viewModel.charactersList)
-        characterAdapter.notifyDataSetChanged()
-        binding.progressBar.visibility = View.INVISIBLE
-        isScrollEnded = false
+    private fun showOrHideSearchFragment() {
+        if (!searchFragmentIsVisible) {
+            binding.groupSearch.visibility = View.VISIBLE
+            searchFragmentIsVisible = true
+        } else {
+            binding.groupSearch.visibility = View.INVISIBLE
+            searchFragmentIsVisible = false
+        }
     }
 
-    private fun checkCounterPages(counterPages: Int): Boolean {
-        return counterPages <= allPagesNumber
+    private fun initSearchSpinners() {
+        spinnerGender = binding.spinnerGender
+        spinnerStatus = binding.spinnerStatus
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.gender_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerGender.adapter
+        }
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.status_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerStatus.adapter
+        }
+        initSearchVariables()
     }
 
-    private fun checkConnection(): Boolean {
-        return checkInternetConnection(requireActivity() as AppCompatActivity)
+    private fun initSearchVariables() {
+        name = ""
+        gender = spinnerGender.selectedItem.toString()
+        status = spinnerStatus.selectedItem.toString()
+        spec = ""
+        type = ""
     }
 
     private fun scrollIsEnded() {
@@ -209,6 +267,80 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun addOnBackPressedCallback() {
+        val callback = requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    when (isEnabled) {
+                        searchedListIsActive -> {
+                            characterAdapter.submitList(viewModel.charactersList)
+                            characterAdapter.notifyDataSetChanged()
+                            searchedListIsActive = false
+                            isEnabled = false
+                        }
+                        searchFragmentIsVisible -> {
+                            showOrHideSearchFragment()
+                        }
+                        else -> {
+                            isEnabled = false
+                            requireActivity().onBackPressed()
+                        }
+                    }
+                }
+            }
+            )
+    }
+
+    private fun filterButtonClicked() {
+        val parameters = mutableListOf<Parameter>()
+        binding.apply {
+            val newName = etName.text.toString()
+            val newSpec = etSpecies.text.toString()
+            val newType = etType.text.toString()
+            val newGender = spinnerGender.selectedItem.toString()
+            val newStatus = spinnerStatus.selectedItem.toString()
+            if (newName !== name) parameters.add(Parameter(Utils.NAME, newName))
+            if (newSpec !== spec) parameters.add(Parameter(Utils.SPECIES, newSpec))
+            if (newType != type) parameters.add(Parameter(Utils.TYPE, newType))
+            if (newGender != gender) parameters.add(Parameter(Utils.GENDER, newGender))
+            if (newStatus != status) parameters.add(Parameter(Utils.STATUS, newStatus))
+        }
+        var counter = 0
+        for (value in parameters) {
+            if (value.value == "") counter += 1
+        }
+        if (parameters.size == counter) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.parameters_not_selected),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+            showOrHideSearchFragment()
+        } else {
+            viewModel.getSearchWithParameters(parameters)
+            showOrHideSearchFragment()
+        }
+
+    }
+
+    private fun setDataToAdapter(list: List<CharacterResult>) {
+        viewModel.checkCharacterListIsContainsData(list)
+        characterAdapter.submitList(viewModel.charactersList)
+        characterAdapter.notifyDataSetChanged()
+        binding.progressBar.visibility = View.INVISIBLE
+        isScrollEnded = false
+    }
+
+    private fun checkCounterPages(counterPages: Int): Boolean {
+        return counterPages <= allPagesNumber
+    }
+
+    private fun checkConnection(): Boolean {
+        return checkInternetConnection(requireActivity() as AppCompatActivity)
     }
 
     override fun onItemClick(result: CharacterResult) {
