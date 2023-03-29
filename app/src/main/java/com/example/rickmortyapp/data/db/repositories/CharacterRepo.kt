@@ -13,13 +13,24 @@ class CharacterRepo(private val characterDao: CharacterDao) {
 
     private val scope = CoroutineScope((Dispatchers.IO))
     val characterFlow: Flow<List<CharacterEntity>> = characterDao.getAllCharacters()
-    val characterByIdLiveData =  MutableLiveData<CharacterEntity>()
+    val characterByIdLiveData = MutableLiveData<CharacterEntity>()
+    val characterWithParametersLiveData = MutableLiveData<List<CharacterEntity>>()
 
     fun insertCharacterList(characterList: List<CharacterEntity>) =
         scope.launch { characterDao.insertCharacterList(characterList) }
 
-    fun getCharacterById(id:Int){
+    fun getCharacterById(id: Int) {
         scope.launch { characterByIdLiveData.postValue(characterDao.getCharacterById(id)) }
+    }
+
+    fun getCharacterWithParameters(
+        name: String, status: String, species: String, gender: String, origin: String
+    ) {
+        scope.launch {
+            characterWithParametersLiveData.postValue(
+                characterDao.getCharacterWithParameters(name,status,species,gender,origin)
+            )
+        }
     }
 
     fun onDestroyCoroutineScope() {

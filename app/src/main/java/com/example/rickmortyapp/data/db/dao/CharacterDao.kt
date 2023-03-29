@@ -18,4 +18,7 @@ interface CharacterDao {
 
     @Query("SELECT * FROM character_table WHERE id=:id")
     fun getCharacterById(id:Int): CharacterEntity
+
+    @Query("SELECT * FROM character_table WHERE name LIKE :name AND status LIKE :status AND species LIKE :species AND gender LIKE :gender AND origin LIKE :origin ")
+    fun getCharacterWithParameters(name:String,status:String,species:String,gender:String,origin:String): List<CharacterEntity>
 }

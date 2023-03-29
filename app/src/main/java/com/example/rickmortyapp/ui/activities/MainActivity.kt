@@ -2,7 +2,6 @@ package com.example.rickmortyapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import androidx.fragment.app.Fragment
 import com.example.rickmortyapp.ui.fragments.characters.CharacterFragment
 import com.example.rickmortyapp.ui.fragments.episodes.EpisodeFragment
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             bottomNavMenu.setOnNavigationItemSelectedListener {
                 handleBottomNavigation(it.itemId)
             }
-            //bottomNavMenu.selectedItemId = R.id.charactersFragment
         }
     }
 
@@ -57,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = getString(fragmentTitle)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.bottom_nav_menu, menu)
         return true
-    }
+    }*/
 }

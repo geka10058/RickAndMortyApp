@@ -28,7 +28,7 @@ object Utils {
     const val NAME = "name"
     const val SPECIES = "species"
     const val STATUS = "status"
-    const val TYPE = "type"
+    const val ORIGIN = "origin"
     const val GENDER = "gender"
     const val NOT_SELECTED = "not selected"
 }

@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:elevation="10dp"
         android:visibility="invisible"
-        app:constraint_referenced_ids="btn_filter,cv_filter,tv_filter,et_name,tv_gender,tv_status,ll_spinners,tv_species,tv_type,ll_searchs" />
+        app:constraint_referenced_ids="btn_filter,cv_filter,tv_filter,et_name,tv_gender,tv_status,ll_spinners,tv_species,tv_origin,ll_searchs" />
 
     <Button
         android:id="@+id/btn_filter"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="Filter"
+        android:text="@string/find"
         android:textAllCaps="false"
         android:background="@drawable/background_btn_white"
         android:textColor="@color/white"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:gravity="center_horizontal"
-        android:text="Filter by:"
+        android:text="@string/filter_by"
         android:textColor="@color/color_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,17 +152,17 @@
         android:paddingEnd="24dp"
         android:text="@string/title_species"
         android:textColor="@color/color_primary"
-        app:layout_constraintEnd_toStartOf="@id/tv_type"
+        app:layout_constraintEnd_toStartOf="@id/tv_origin"
         app:layout_constraintStart_toStartOf="@id/cv_filter"
         app:layout_constraintTop_toBottomOf="@id/ll_spinners" />
 
     <TextView
-        android:id="@+id/tv_type"
+        android:id="@+id/tv_origin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:paddingStart="24dp"
-        android:text="@string/title_type"
+        android:text="@string/title_origin"
         android:textColor="@color/color_primary"
         app:layout_constraintEnd_toEndOf="@id/cv_filter"
         app:layout_constraintStart_toEndOf="@id/tv_species"
@@ -179,7 +179,7 @@
         android:paddingBottom="12dp"
         app:layout_constraintEnd_toEndOf="@id/cv_filter"
         app:layout_constraintStart_toStartOf="@id/cv_filter"
-        app:layout_constraintTop_toBottomOf="@id/tv_type">
+        app:layout_constraintTop_toBottomOf="@id/tv_origin">
 
         <EditText
             android:id="@+id/et_species"
@@ -199,7 +199,7 @@
             />
 
         <EditText
-            android:id="@+id/et_type"
+            android:id="@+id/et_origin"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"

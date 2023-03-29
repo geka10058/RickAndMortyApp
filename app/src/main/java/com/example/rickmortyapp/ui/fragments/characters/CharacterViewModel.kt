@@ -16,7 +16,8 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
 
     private val controllerResponse = CharacterResponseRC()
     private val controllerForSearchWithParameters = CharacterWithParametersRC()
-    val controllerForSearchWithParametersLD = controllerForSearchWithParameters.characterListWithParametersLiveData
+    val characterResponseForSearchWithParametersLD = controllerForSearchWithParameters.characterListWithParametersLiveData
+    val characterEntitiesForSearchWithParametersLD = characterRepo.characterWithParametersLiveData
     val characterResponseLD = controllerResponse.characterResponseLiveData
     val characterEntityLD = characterRepo.characterFlow.asLiveData()
     val characterLD = MutableLiveData<List<CharacterResult>>()
@@ -37,21 +38,31 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
         characterRepo.insertCharacterList(list)
     }
 
-    fun getSearchWithParameters(parameters: List<Parameter>){
+    fun getSearchWithParameters(parameters: List<Parameter>, checkConnection: Boolean){
         val params = convertParametersToMap(parameters)
-        Log.d("TAG", "getSearchWithParameters! параметры: $params")
-        controllerForSearchWithParameters.getCharacterListWithParameters(params)
+        if (checkConnection){
+            controllerForSearchWithParameters.getCharacterListWithParameters(params)
+        } else {
+            characterRepo.getCharacterWithParameters(
+                "%${params[Utils.NAME]!!}%",
+                "%${params[Utils.STATUS]!!}%",
+                "%${params[Utils.SPECIES]!!}%",
+                    "%${params[Utils.GENDER]!!}%",
+                        "%${params[Utils.ORIGIN]!!}%",
+                )
+        }
+
     }
 
     private fun convertParametersToMap(parameters: List<Parameter>):Map<String,String>{
-        val map = hashMapOf<String,String>()//
+        val map = mutableMapOf<String,String>()//
         for (param in parameters){
             when(param.name){
                 Utils.NAME -> { map.put(param.name,param.value) }
-                Utils.SPECIES -> { map.put(param.name,param.value) }
                 Utils.STATUS -> { map.put(param.name,param.value) }
-                Utils.TYPE -> { map.put(param.name,param.value) }
+                Utils.SPECIES -> { map.put(param.name,param.value) }
                 Utils.GENDER -> { map.put(param.name,param.value) }
+                Utils.ORIGIN -> { map.put(param.name,param.value) }
             }
         }
         return map

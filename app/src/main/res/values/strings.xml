@@ -29,6 +29,8 @@
     <string name="all_data_uploaded">All data uploaded</string>
     <string name="no_data_on_request">There is no data on your request</string>
     <string name="parameters_not_selected">search parameters are not selected</string>
+    <string name="find">Find</string>
+    <string name="filter_by">Filter by:</string>
 
     <string-array name="gender_array">
         <item>not selected</item>
