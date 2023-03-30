@@ -34,7 +34,7 @@ class LocationAdapter(private val listener: OnLocationItemClickListener) :
             binding.apply {
 
                 Glide.with(itemView)
-                    .load(R.drawable.location_image)
+                    .load(R.drawable.location_not_loaded)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.splash_image)

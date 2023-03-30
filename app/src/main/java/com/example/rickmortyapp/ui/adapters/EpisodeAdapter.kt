@@ -33,7 +33,7 @@ class EpisodeAdapter(private val listener: OnEpisodeItemClickListener) :
             binding.apply {
 
                 Glide.with(itemView)
-                    .load(R.drawable.episode_image)
+                    .load(R.drawable.episode_not_loaded)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.splash_image)
