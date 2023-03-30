@@ -14,12 +14,21 @@ class EpisodeRepo(private val episodeDao: EpisodeDao) {
     private val scope = CoroutineScope((Dispatchers.IO))
     val episodeFlow: Flow<List<EpisodeEntity>> = episodeDao.getAllEpisodes()
     val episodeByIdLiveData =  MutableLiveData<EpisodeEntity>()
+    val episodeWithParametersLiveData = MutableLiveData<List<EpisodeEntity>>()
 
     fun insertEpisodeList(episodeList: List<EpisodeEntity>) =
         scope.launch { episodeDao.insertEpisodeList(episodeList) }
 
     fun getEpisodeById(id: Int) {
         scope.launch { episodeByIdLiveData.postValue(episodeDao.getEpisodeById(id)) }
+    }
+
+    fun getEpisodeWithParameters(name: String, episode: String) {
+        scope.launch {
+            episodeWithParametersLiveData.postValue(
+                episodeDao.getLocationWithParameters(name,episode)
+            )
+        }
     }
 
     fun onDestroyCoroutineScope() {

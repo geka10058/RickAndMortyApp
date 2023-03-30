@@ -18,4 +18,7 @@ interface EpisodeDao {
 
     @Query("SELECT * FROM episode_table WHERE id=:id")
     fun getEpisodeById(id:Int): EpisodeEntity
+
+    @Query("SELECT * FROM episode_table WHERE name LIKE :name AND episode LIKE :episode")
+    fun getLocationWithParameters(name:String,episode:String): List<EpisodeEntity>
 }

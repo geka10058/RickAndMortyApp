@@ -1,6 +1,5 @@
 package com.example.rickmortyapp.data.retrofit_controllers
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.api.ApiRickMorty
@@ -15,7 +14,6 @@ class LocationWithParametersRC : Callback<LocationResponse> {
     val locationListWithParametersLiveData = MutableLiveData<LocationResponse>()
 
     fun getLocationListWithParameters(stringMap: Map<String, String>) {
-
         val retrofit = Utils.retrofit
         val api: ApiRickMorty = retrofit.create(ApiRickMorty::class.java)
         val call: Call<LocationResponse> = api.getLocationListWithParameters(stringMap)
@@ -25,7 +23,6 @@ class LocationWithParametersRC : Callback<LocationResponse> {
     override fun onResponse(call: Call<LocationResponse>, response: Response<LocationResponse>) {
         if (response.isSuccessful) {
             locationListWithParametersLiveData.postValue(response.body())
-            Log.d("TAG", response.body().toString())
         } else {
             locationListWithParametersLiveData.postValue(
                 LocationResponse(

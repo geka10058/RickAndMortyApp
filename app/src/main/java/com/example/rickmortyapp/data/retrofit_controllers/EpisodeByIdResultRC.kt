@@ -1,17 +1,12 @@
 package com.example.rickmortyapp.data.retrofit_controllers
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.api.ApiRickMorty
 import com.example.rickmortyapp.data.models.episodes_data_classes.EpisodeResult
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 class EpisodeByIdResultRC: Callback<EpisodeResult> {
 
@@ -27,7 +22,6 @@ class EpisodeByIdResultRC: Callback<EpisodeResult> {
     override fun onResponse(call: Call<EpisodeResult>, response: Response<EpisodeResult>) {
         if (response.isSuccessful){
             episodeByIdResultLiveData.postValue(response.body())
-            Log.d("TAG", response.body().toString())
         } else println(response.errorBody())
     }
 

@@ -61,6 +61,11 @@ interface ApiRickMorty {
     @GET("episode/{id}")
     fun getEpisodeById(@Path("id") id: Int): Call<EpisodeResult>
 
+    @Headers("Content-type: application/json")
+    @GET("episode/")
+    fun getEpisodeListWithParameters(@QueryMap string: Map<String,String>): Call<EpisodeResponse>
+
+
     companion object{
         const val BASE_URL = "https://rickandmortyapi.com/api/"
     }

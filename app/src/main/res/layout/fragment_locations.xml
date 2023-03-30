@@ -6,185 +6,172 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.locations.LocationsFragment">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_search"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:visibility="invisible"
-        app:constraint_referenced_ids="btn_filter,cv_filter,tv_filter,et_name,tv_type,tv_dimension,ll_searchs" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="@string/find"
-        android:textAllCaps="false"
-        android:background="@drawable/background_btn_white"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/cv_filter"
-        app:layout_constraintStart_toStartOf="@id/cv_filter"
-        app:layout_constraintTop_toBottomOf="@id/ll_searchs"/>
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="btn_filter,cv_filter,tv_filter,et_name,tv_type,tv_dimension,ll_searchs" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_filter"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="0dp"
-        android:elevation="0dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/btn_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <Button
+            android:id="@+id/btn_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/background_btn_white"
+            android:text="@string/find"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/cv_filter"
+            app:layout_constraintStart_toStartOf="@id/cv_filter"
+            app:layout_constraintTop_toBottomOf="@id/ll_searchs" />
 
-    <TextView
-        android:id="@+id/tv_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:gravity="center_horizontal"
-        android:text="@string/filter_by"
-        android:textColor="@color/color_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cv_filter" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_filter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:elevation="0dp"
+            android:visibility="invisible"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_name"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/background_round_black"
-        android:ellipsize="end"
-        android:hint="@string/title_name"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/color_primary"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/cv_filter"
-        app:layout_constraintStart_toStartOf="@id/cv_filter"
-        app:layout_constraintTop_toBottomOf="@id/tv_filter" />
-
-    <TextView
-        android:id="@+id/tv_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:paddingEnd="24dp"
-        android:text="@string/title_type"
-        android:textColor="@color/color_primary"
-        app:layout_constraintEnd_toStartOf="@id/tv_dimension"
-        app:layout_constraintStart_toStartOf="@id/cv_filter"
-        app:layout_constraintTop_toBottomOf="@id/et_name" />
-
-    <TextView
-        android:id="@+id/tv_dimension"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:paddingStart="24dp"
-        android:text="@string/title_dimension"
-        android:textColor="@color/color_primary"
-        app:layout_constraintEnd_toEndOf="@id/cv_filter"
-        app:layout_constraintStart_toEndOf="@id/tv_type"
-        app:layout_constraintTop_toBottomOf="@id/et_name" />
-
-    <LinearLayout
-        android:id="@+id/ll_searchs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        android:paddingBottom="12dp"
-        app:layout_constraintEnd_toEndOf="@id/cv_filter"
-        app:layout_constraintStart_toStartOf="@id/cv_filter"
-        app:layout_constraintTop_toBottomOf="@id/tv_dimension">
+        <TextView
+            android:id="@+id/tv_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:gravity="center_horizontal"
+            android:text="@string/filter_by"
+            android:textColor="@color/color_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cv_filter" />
 
         <EditText
-            android:id="@+id/et_type"
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/background_round_black"
             android:ellipsize="end"
+            android:hint="@string/title_name"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/color_primary"
             android:textSize="14sp"
-            />
+            app:layout_constraintEnd_toEndOf="@+id/cv_filter"
+            app:layout_constraintStart_toStartOf="@id/cv_filter"
+            app:layout_constraintTop_toBottomOf="@id/tv_filter" />
 
-        <EditText
-            android:id="@+id/et_dimension"
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:paddingEnd="24dp"
+            android:text="@string/title_type"
+            android:textColor="@color/color_primary"
+            app:layout_constraintEnd_toStartOf="@id/tv_dimension"
+            app:layout_constraintStart_toStartOf="@id/cv_filter"
+            app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+        <TextView
+            android:id="@+id/tv_dimension"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:paddingStart="24dp"
+            android:text="@string/title_dimension"
+            android:textColor="@color/color_primary"
+            app:layout_constraintEnd_toEndOf="@id/cv_filter"
+            app:layout_constraintStart_toEndOf="@id/tv_type"
+            app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+        <LinearLayout
+            android:id="@+id/ll_searchs"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/background_round_black"
-            android:ellipsize="end"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            />
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            app:layout_constraintEnd_toEndOf="@id/cv_filter"
+            app:layout_constraintStart_toStartOf="@id/cv_filter"
+            app:layout_constraintTop_toBottomOf="@id/tv_dimension">
 
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/title_character_fragment"
-        android:textColor="@color/color_secondary"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+            <EditText
+                android:id="@+id/et_type"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_round_black"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_locations"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv"
-        tools:listitem="@layout/item_location" />
+            <EditText
+                android:id="@+id/et_dimension"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_round_black"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_locations"
-        app:layout_constraintEnd_toEndOf="@+id/rv_locations"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_locations"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_location" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_locations"
+            app:layout_constraintEnd_toEndOf="@+id/rv_locations"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

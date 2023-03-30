@@ -42,7 +42,6 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
     private lateinit var type: String
     private lateinit var dimension: String
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -96,11 +95,14 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
 
         viewModel.locationResponseLD.observe(viewLifecycleOwner) {
             it.let {
-                val result = it.locationResults
-                allPagesNumber = it.info.pages!!
-                viewModel.locationResponse.clear()
-                viewModel.locationResponse.addAll(result)
-                viewModel.selectDataSource(checkConnection())
+                if (it.locationResults != null) {
+                    val result = it.locationResults
+                    allPagesNumber = it.info.pages!!
+                    viewModel.locationResponse.clear()
+                    viewModel.locationResponse.addAll(result)
+                    viewModel.selectDataSource(checkConnection())
+                }
+
             }
         }
 

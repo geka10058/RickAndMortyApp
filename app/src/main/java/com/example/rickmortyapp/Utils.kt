@@ -34,6 +34,7 @@ object Utils {
     const val GENDER = "gender"
     const val TYPE = "type"
     const val DIMENSION = "dimension"
+    const val EPISODE = "episode"
 
     private fun getRetrofitInstance() : Retrofit {
         val interceptor = HttpLoggingInterceptor()
