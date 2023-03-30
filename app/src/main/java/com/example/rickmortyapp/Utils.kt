@@ -34,7 +34,6 @@ object Utils {
     const val GENDER = "gender"
     const val TYPE = "type"
     const val DIMENSION = "dimension"
-    const val NOT_SELECTED = "not selected"
 
     private fun getRetrofitInstance() : Retrofit {
         val interceptor = HttpLoggingInterceptor()
