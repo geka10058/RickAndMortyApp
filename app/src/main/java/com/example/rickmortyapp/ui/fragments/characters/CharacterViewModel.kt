@@ -1,6 +1,5 @@
 package com.example.rickmortyapp.ui.fragments.characters
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.data.db.entities.CharacterEntity
@@ -51,7 +50,6 @@ class CharacterViewModel(private val characterRepo: CharacterRepo) : ViewModel()
                         "%${params[Utils.ORIGIN]!!}%",
                 )
         }
-
     }
 
     private fun convertParametersToMap(parameters: List<Parameter>):Map<String,String>{

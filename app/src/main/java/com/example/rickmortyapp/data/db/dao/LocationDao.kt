@@ -18,4 +18,7 @@ interface LocationDao {
 
     @Query("SELECT * FROM location_table WHERE id=:id")
     fun getLocationByID(id:Int): LocationEntity
+
+    @Query("SELECT * FROM location_table WHERE name LIKE :name AND type LIKE :type AND dimension LIKE :dimension ")
+    fun getLocationWithParameters(name:String,type:String,dimension:String): List<LocationEntity>
 }

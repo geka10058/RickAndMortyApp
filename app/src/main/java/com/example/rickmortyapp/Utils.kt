@@ -4,6 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rickmortyapp.api.ApiRickMorty
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 object Utils {
 
@@ -19,9 +24,6 @@ object Utils {
         }
     }
 
-    const val CHARACTER_FIRST_ITEM_POSITION = "CFIP"
-    const val LOCATION_FIRST_ITEM_POSITION = "LFIP"
-    const val EPISODE_FIRST_ITEM_POSITION = "EFIP"
     const val BUNDLE_FLAG_CHARACTER = "bundle_flag_character_id"
     const val BUNDLE_FLAG_EPISODE = "bundle_flag_episode_id"
     const val BUNDLE_FLAG_LOCATION = "bundle_flag_location_id"
@@ -30,5 +32,22 @@ object Utils {
     const val STATUS = "status"
     const val ORIGIN = "origin"
     const val GENDER = "gender"
+    const val TYPE = "type"
+    const val DIMENSION = "dimension"
     const val NOT_SELECTED = "not selected"
+
+    private fun getRetrofitInstance() : Retrofit {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(ApiRickMorty.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit
+    }
+
+    val retrofit = getRetrofitInstance()
 }

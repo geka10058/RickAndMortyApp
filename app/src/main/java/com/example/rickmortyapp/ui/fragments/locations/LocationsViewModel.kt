@@ -1,14 +1,20 @@
 package com.example.rickmortyapp.ui.fragments.locations
 
 import androidx.lifecycle.*
+import com.example.rickmortyapp.Utils
 import com.example.rickmortyapp.data.db.entities.LocationEntity
 import com.example.rickmortyapp.data.db.repositories.LocationRepo
+import com.example.rickmortyapp.data.models.Parameter
 import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
 import com.example.rickmortyapp.data.retrofit_controllers.LocationResponseRC
+import com.example.rickmortyapp.data.retrofit_controllers.LocationWithParametersRC
 
 class LocationsViewModel(private val locationRepo: LocationRepo) : ViewModel() {
 
     private val controller = LocationResponseRC()
+    private val controllerForSearchWithParameters = LocationWithParametersRC()
+    val locationResponseForSearchWithParametersLD = controllerForSearchWithParameters.locationListWithParametersLiveData
+    val locationEntitiesForSearchWithParametersLD = locationRepo.locationWithParametersLiveData
     val locationResponseLD = controller.locationResponseLiveData
     val locationEntityLD = locationRepo.locationFlow.asLiveData()
     val locationLD = MutableLiveData<List<LocationResult>>()
@@ -27,6 +33,31 @@ class LocationsViewModel(private val locationRepo: LocationRepo) : ViewModel() {
     fun addLocationListToDB(locationList: List<LocationResult>) {
         val list = convertResultToEntity(locationList)
         locationRepo.insertLocationList(list)
+    }
+
+    fun getSearchWithParameters(parameters: List<Parameter>, checkConnection: Boolean){
+        val params = convertParametersToMap(parameters)
+        if (checkConnection){
+            controllerForSearchWithParameters.getLocationListWithParameters(params)
+        } else {
+            locationRepo.getLocationWithParameters(
+                "%${params[Utils.NAME]!!}%",
+                "%${params[Utils.TYPE]!!}%",
+                "%${params[Utils.DIMENSION]!!}%",
+            )
+        }
+    }
+
+    private fun convertParametersToMap(parameters: List<Parameter>):Map<String,String>{
+        val map = mutableMapOf<String,String>()//
+        for (param in parameters){
+            when(param.name){
+                Utils.NAME -> { map.put(param.name,param.value) }
+                Utils.TYPE -> { map.put(param.name,param.value) }
+                Utils.DIMENSION -> { map.put(param.name,param.value) }
+            }
+        }
+        return map
     }
 
     private fun convertResultToEntity(locationList: List<LocationResult>): List<LocationEntity> {

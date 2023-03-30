@@ -1,18 +1,21 @@
 package com.example.rickmortyapp.ui.fragments.locations
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyapp.R
 import com.example.rickmortyapp.RickMortyApplication
 import com.example.rickmortyapp.Utils
+import com.example.rickmortyapp.data.models.Parameter
 import com.example.rickmortyapp.data.models.locations_data_classes.LocationResult
 import com.example.rickmortyapp.databinding.FragmentLocationsBinding
 import com.example.rickmortyapp.ui.adapters.LocationAdapter
@@ -31,8 +34,13 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
     private var counterPages = 1
     private var allPagesNumber = 42
     private var isScrollEnded = false
+    private var searchFragmentIsVisible = false
+    private var searchedListIsActive = false
     private lateinit var locationAdapter: LocationAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var name: String
+    private lateinit var type: String
+    private lateinit var dimension: String
 
 
     override fun onCreateView(
@@ -46,6 +54,9 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbarMenu()
+        initSearchVariables()
+        addOnBackPressedCallback()
 
         if (viewModel.locationList.isEmpty()) {
             viewModel.selectDataSource(checkConnection())
@@ -69,7 +80,19 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
                     }
                 })
             }
+
+            btnFilter.setOnClickListener {
+                filterButtonClicked()
+            }
+
+            root.setOnRefreshListener {
+                locationAdapter.submitList(viewModel.locationList)
+                locationAdapter.notifyDataSetChanged()
+                root.isRefreshing = false
+            }
         }
+
+
 
         viewModel.locationResponseLD.observe(viewLifecycleOwner) {
             it.let {
@@ -95,22 +118,60 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
                 setDataToAdapter(it)
             }
         }
+
+        viewModel.locationResponseForSearchWithParametersLD.observe(viewLifecycleOwner){
+            it.let {
+                if (it.locationResults.isNullOrEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.no_data_on_request),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    setFoundDataToAdapter(it.locationResults)
+                }
+            }
+        }
+
+        viewModel.locationEntitiesForSearchWithParametersLD.observe(viewLifecycleOwner) {
+            it.let {
+                val results = viewModel.convertEntityToResult(it)
+                setFoundDataToAdapter(results)
+            }
+        }
     }
 
-    private fun setDataToAdapter(list: List<LocationResult>) {
-        viewModel.checkLocationListIsContainsData(list)
-        locationAdapter.submitList(viewModel.locationList)
-        locationAdapter.notifyDataSetChanged()
-        binding.progressBar.visibility = View.INVISIBLE
-        isScrollEnded = false
+    private fun setupToolbarMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.toolbar_search_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.filter -> {
+                        showOrHideSearchFragment()
+                    }
+                }
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun checkCounterPages(counterPages: Int): Boolean {
-        return counterPages <= allPagesNumber
+    private fun showOrHideSearchFragment() {
+        if (!searchFragmentIsVisible) {
+            binding.groupSearch.visibility = View.VISIBLE
+            searchFragmentIsVisible = true
+        } else {
+            binding.groupSearch.visibility = View.INVISIBLE
+            searchFragmentIsVisible = false
+        }
     }
 
-    private fun checkConnection():Boolean{
-        return Utils.checkInternetConnection(requireActivity() as AppCompatActivity)
+    private fun initSearchVariables() {
+        name = ""
+        type = ""
+        dimension = ""
     }
 
     private fun scrollIsEnded(){
@@ -138,6 +199,85 @@ class LocationsFragment : Fragment(R.layout.fragment_locations), OnLocationItemC
             ).show()
         }
     }
+
+    private fun addOnBackPressedCallback() {
+        val callback = requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    when (isEnabled) {
+                        searchedListIsActive -> {
+                            locationAdapter.submitList(viewModel.locationList)
+                            locationAdapter.notifyDataSetChanged()
+                            searchedListIsActive = false
+                            isEnabled = false
+                        }
+                        searchFragmentIsVisible -> {
+                            showOrHideSearchFragment()
+                        }
+                        else -> {
+                            isEnabled = false
+                            requireActivity().onBackPressed()
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun filterButtonClicked() {
+        val parameters = mutableListOf<Parameter>()
+        binding.apply {
+            val newName = etName.text.toString()
+            val newType = etType.text.toString()
+            val newDimension = etDimension.text.toString()
+            parameters.add(Parameter(Utils.NAME, newName))
+            parameters.add(Parameter(Utils.TYPE, newType))
+            parameters.add(Parameter(Utils.DIMENSION, newDimension))
+        }
+        if (checkSelectedParameters(parameters)) {
+            viewModel.getSearchWithParameters(parameters, checkConnection())
+            showOrHideSearchFragment()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.parameters_not_selected),
+                Toast.LENGTH_SHORT
+            ).show()
+            showOrHideSearchFragment()
+        }
+    }
+
+    private fun checkSelectedParameters(parameters: List<Parameter>): Boolean{
+        var counter = 0
+        for (value in parameters) {
+            if (value.value == "") counter += 1
+        }
+        return parameters.size !== counter
+    }
+
+    private fun setDataToAdapter(list: List<LocationResult>) {
+        viewModel.checkLocationListIsContainsData(list)
+        locationAdapter.submitList(viewModel.locationList)
+        locationAdapter.notifyDataSetChanged()
+        binding.progressBar.visibility = View.INVISIBLE
+        isScrollEnded = false
+    }
+
+    private fun setFoundDataToAdapter(list: List<LocationResult>) {
+        locationAdapter.submitList(list)
+        locationAdapter.notifyDataSetChanged()
+        searchedListIsActive = true
+    }
+
+    private fun checkCounterPages(counterPages: Int): Boolean {
+        return counterPages <= allPagesNumber
+    }
+
+    private fun checkConnection():Boolean{
+        return Utils.checkInternetConnection(requireActivity() as AppCompatActivity)
+    }
+
+
 
     override fun onItemClick(result: LocationResult) {
         val bundle = Bundle()

@@ -50,6 +50,10 @@ interface ApiRickMorty {
     fun getLocationById(@Path("id") id: Int): Call<LocationResult>
 
     @Headers("Content-type: application/json")
+    @GET("location/")
+    fun getLocationListWithParameters(@QueryMap string: Map<String,String>): Call<LocationResponse>
+
+    @Headers("Content-type: application/json")
     @GET("episode/?")
     fun getEpisodesResponse(@Query("page") page: Int): Call<EpisodeResponse>
 

@@ -95,6 +95,12 @@ class CharacterFragment : Fragment(R.layout.fragment_character), OnCharacterItem
             btnFilter.setOnClickListener {
                 filterButtonClicked()
             }
+
+            root.setOnRefreshListener {
+                characterAdapter.submitList(viewModel.charactersList)
+                characterAdapter.notifyDataSetChanged()
+                root.isRefreshing = false
+            }
         }
 
         viewModel.characterResponseLD.observe(viewLifecycleOwner) {
