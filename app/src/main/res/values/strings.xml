@@ -1,3 +1,49 @@
 <resources>
     <string name="app_name">Rick&amp;MortyApp</string>
+    <string name="designed_by">Designed by Yauheni Kirychenka</string>
+    <string name="nav_menu_characters">Characters</string>
+    <string name="nav_menu_locations">Locations</string>
+    <string name="nav_menu_episodes">Episodes</string>
+    <string name="nav_menu_search">Search</string>
+    <string name="nav_menu_filter">Filter</string>
+
+    <string name="title_character_fragment">Characters</string>
+    <string name="title_locations_fragment">Locations</string>
+    <string name="title_episodes_fragment">Episodes</string>
+    <string name="title_name_status">Name_status</string>
+    <string name="title_species_gender">Species_gender</string>
+    <string name="title_name">Name:</string>
+    <string name="title_status">Status:</string>
+    <string name="title_gender">Gender:</string>
+    <string name="title_species">Species:</string>
+    <string name="title_dimension">Dimension:</string>
+    <string name="title_type">Type:</string>
+    <string name="title_air_date">Air Date:</string>
+    <string name="title_episode">Episode:</string>
+    <string name="title_origin">Origin:</string>
+    <string name="title_location">Location:</string>
+    <string name="title_character">Characters:</string>
+    <string name="title_residents">Residents:</string>
+    <string name="internet_connection_off">Turn on internet connection to see list of characters</string>
+    <string name="internet_connection_false">Turn on internet connection to see more</string>
+    <string name="all_data_uploaded">All data uploaded</string>
+    <string name="no_data_on_request">There is no data on your request</string>
+    <string name="parameters_not_selected">search parameters are not selected</string>
+    <string name="find">Find</string>
+    <string name="filter_by">Filter by:</string>
+
+    <string-array name="gender_array">
+        <item>not selected</item>
+        <item>female</item>
+        <item>male</item>
+        <item>genderless </item>
+        <item>unknown</item>
+    </string-array>
+
+    <string-array name="status_array">
+        <item>not selected</item>
+        <item>alive</item>
+        <item>dead </item>
+        <item>unknown </item>
+    </string-array>
 </resources>
